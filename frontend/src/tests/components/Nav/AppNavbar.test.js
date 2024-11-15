@@ -140,7 +140,7 @@ describe("AppNavbar tests", () => {
     expect(screen.queryByTestId(/AppNavbarLocalhost/i)).toBeNull();
   });
 
-  test("renders the ucsbdates link correctly", async () => {
+  test("does not render the ucsbdates link", async () => {
     const currentUser = currentUserFixtures.userOnly;
     const systemInfo = systemInfoFixtures.showingBoth;
 
@@ -158,13 +158,11 @@ describe("AppNavbar tests", () => {
       </QueryClientProvider>,
     );
 
-    await screen.findByText("UCSB Dates");
-    const link = screen.getByText("UCSB Dates");
-    expect(link).toBeInTheDocument();
-    expect(link.getAttribute("href")).toBe("/ucsbdates");
+    await screen.findByText("AppNavbar");
+    expect(screen.queryByText("UCSBDates")).not.toBeInTheDocument();
   });
 
-  test("renders the restaurants link correctly", async () => {
+  test("does not render the restaurants link", async () => {
     const currentUser = currentUserFixtures.userOnly;
     const systemInfo = systemInfoFixtures.showingBoth;
 
@@ -182,10 +180,8 @@ describe("AppNavbar tests", () => {
       </QueryClientProvider>,
     );
 
-    await screen.findByText("Restaurants");
-    const link = screen.getByText("Restaurants");
-    expect(link).toBeInTheDocument();
-    expect(link.getAttribute("href")).toBe("/restaurants");
+    await screen.findByText("AppNavbar");
+    expect(screen.queryByText("Restaurants")).not.toBeInTheDocument();
   });
 
   test("Restaurant and UCSBDates links do NOT show when not logged in", async () => {
