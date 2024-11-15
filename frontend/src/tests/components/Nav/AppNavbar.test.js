@@ -158,7 +158,7 @@ describe("AppNavbar tests", () => {
       </QueryClientProvider>,
     );
 
-    await screen.findByText("AppNavbar");
+    await screen.findByTestId("AppNavbar");
     expect(screen.queryByText("UCSBDates")).not.toBeInTheDocument();
   });
 
@@ -180,7 +180,7 @@ describe("AppNavbar tests", () => {
       </QueryClientProvider>,
     );
 
-    await screen.findByText("AppNavbar");
+    await screen.findByTestId("AppNavbar");
     expect(screen.queryByText("Restaurants")).not.toBeInTheDocument();
   });
 
