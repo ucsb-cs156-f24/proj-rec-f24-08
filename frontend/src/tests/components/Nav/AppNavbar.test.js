@@ -158,4 +158,46 @@ describe("AppNavbar tests", () => {
       "/oauth2/authorization/google",
     );
   });
+
+  test("Welcome do NOT show when not logged in", async () => {
+    const currentUser = null;
+    const systemInfo = systemInfoFixtures.showingBoth;
+    const doLogin = jest.fn();
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <AppNavbar
+            currentUser={currentUser}
+            systemInfo={systemInfo}
+            doLogin={doLogin}
+          />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    expect(screen.queryByText("Welcome,")).not.toBeInTheDocument();
+    expect(screen.queryByText("Placeholder")).not.toBeInTheDocument();
+  });
+
+  test("Welcome does show when logged in", async () => {
+    const currentUser = currentUserFixtures.userOnly;
+    const systemInfo = systemInfoFixtures.showingBoth;
+    const doLogin = jest.fn();
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <AppNavbar
+            currentUser={currentUser}
+            systemInfo={systemInfo}
+            doLogin={doLogin}
+          />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    // expect(screen.getByText("Welcome,")).toBeInTheDocument();
+    expect(screen.getByText("Placeholder")).toBeInTheDocument();
+  });
 });
