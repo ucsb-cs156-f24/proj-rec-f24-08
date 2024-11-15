@@ -177,7 +177,9 @@ describe("AppNavbar tests", () => {
     );
 
     expect(screen.queryByText("Welcome,")).not.toBeInTheDocument();
-    expect(screen.queryByText("Recommendation Request")).not.toBeInTheDocument();
+    expect(
+      screen.queryByText("Recommendation Request"),
+    ).not.toBeInTheDocument();
   });
 
   test("Welcome does show when logged in", async () => {
