@@ -60,8 +60,8 @@ export default function AppNavbar({
               )}
               {currentUser && currentUser.loggedIn ? (
                 <>
-                  <Nav.Link as={Link} to="/placeholder">
-                    Placeholder
+                  <Nav.Link as={Link} to="/recommendationrequest">
+                    Recommendation Request
                   </Nav.Link>
                 </>
               ) : (

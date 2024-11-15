@@ -177,7 +177,7 @@ describe("AppNavbar tests", () => {
     );
 
     expect(screen.queryByText("Welcome,")).not.toBeInTheDocument();
-    expect(screen.queryByText("Placeholder")).not.toBeInTheDocument();
+    expect(screen.queryByText("Recommendation Request")).not.toBeInTheDocument();
   });
 
   test("Welcome does show when logged in", async () => {
@@ -198,6 +198,6 @@ describe("AppNavbar tests", () => {
     );
 
     // expect(screen.getByText("Welcome,")).toBeInTheDocument();
-    expect(screen.getByText("Placeholder")).toBeInTheDocument();
+    expect(screen.getByText("Recommendation Request")).toBeInTheDocument();
   });
 });
