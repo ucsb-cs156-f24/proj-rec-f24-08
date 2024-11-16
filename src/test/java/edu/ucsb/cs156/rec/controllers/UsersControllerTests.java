@@ -6,6 +6,7 @@ import edu.ucsb.cs156.rec.repositories.UserRepository;
 import edu.ucsb.cs156.rec.testconfig.TestConfig;
 
 import org.junit.jupiter.api.Test;
+import org.postgresql.translation.messages_pt_BR;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -40,6 +41,14 @@ public class UsersControllerTests extends ControllerTestCase {
   public void users__user_logged_in() throws Exception {
     mockMvc.perform(get("/api/admin/users"))
         .andExpect(status().is(403));
+  }
+
+  @WithMockUser(roles = { "USER" })
+  @Test
+  public void genericMessage__user_logged_in() throws Exception {
+    String message = "hello";
+    MvcResult response = mockMvc.perform(get("/api/genericMessage", message))
+      .andExpect(status().isOk()).andReturn();
   }
 
   @WithMockUser(roles = { "ADMIN", "USER" })
