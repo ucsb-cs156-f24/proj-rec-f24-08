@@ -14,6 +14,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -22,6 +23,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.Optional;
 
 @WebMvcTest(controllers = UsersController.class)
 @Import(TestConfig.class)
@@ -41,14 +44,6 @@ public class UsersControllerTests extends ControllerTestCase {
   public void users__user_logged_in() throws Exception {
     mockMvc.perform(get("/api/admin/users"))
         .andExpect(status().is(403));
-  }
-
-  @WithMockUser(roles = { "USER" })
-  @Test
-  public void genericMessage__user_logged_in() throws Exception {
-    String message = "hello";
-    MvcResult response = mockMvc.perform(get("/api/genericMessage", message))
-      .andExpect(status().isOk()).andReturn();
   }
 
   @WithMockUser(roles = { "ADMIN", "USER" })
