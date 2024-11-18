@@ -61,18 +61,6 @@ public class RecommendationRequestController {
      * @return the saved ucsbdate
      */
 
-        // private long id;
-
-        // private String professorName;
-        // private String professorEmail;
-        // private String requesterName;
-        // private String recommendationTypes;
-        // private String details;
-        // private String status;
-      
-        // private LocalDateTime submissionDate;
-        // private LocalDateTime completionDate;
-
     @Operation(summary = "Create a new recommendation request")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
@@ -142,9 +130,14 @@ public class RecommendationRequestController {
         RecommendationRequest recommendationRequest = recommendationRequestRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(RecommendationRequest.class, id));
 
-        recommendationRequest.setQuarterYYYYQ(incoming.getQuarterYYYYQ());
-        recommendationRequest.setName(incoming.getName());
-        recommendationRequest.setLocalDateTime(incoming.getLocalDateTime());
+        recommendationRequest.setProfessorName(incoming.getProfessorName());
+        recommendationRequest.setProfessorEmail(incoming.getProfessorEmail());
+        recommendationRequest.setRequesterName(incoming.getRequesterName());
+        recommendationRequest.setRecommendationTypes(incoming.getRecommendationTypes());
+        recommendationRequest.setDetails(incoming.getDetails());
+        recommendationRequest.setStatus(incoming.getStatus());
+        recommendationRequest.setSubmissionDate(incoming.getSubmissionDate());
+        recommendationRequest.setCompletionDate(incoming.getCompletionDate());
 
         recommendationRequestRepository.save(recommendationRequest);
 
