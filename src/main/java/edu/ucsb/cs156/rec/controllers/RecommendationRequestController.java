@@ -30,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/recommendationrequests")
 @RestController
 @Slf4j
-public class RecommendationRequestController  extends ApiController {
+public class RecommendationRequestController extends ApiController {
 
     @Autowired
     RecommendationRequestRepository recommendationRequestRepository;
@@ -73,7 +73,7 @@ public class RecommendationRequestController  extends ApiController {
             @Parameter(name = "status") @RequestParam String status,
             @Parameter(name = "submissionDate", description = "date (in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601)") @RequestParam("submissionDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime submissionDate,
             @Parameter(name = "completionDate", description = "date (in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601)") @RequestParam("completionDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime completionDate)
-            throws JsonProcessingException {                
+            throws JsonProcessingException {
         // For an explanation of @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
         // See: https://www.baeldung.com/spring-date-parameters
 
@@ -142,5 +142,17 @@ public class RecommendationRequestController  extends ApiController {
         recommendationRequestRepository.save(recommendationRequest);
 
         return recommendationRequest;
+    }
+
+    /**
+     * This method returns a list of all recommendation requests
+     * 
+     * @return a list of all recommendation requests
+     */
+    @Operation(summary = "List all recommendation requests")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("/all")
+    public Iterable<RecommendationRequest> getAll() {
+        return recommendationRequestRepository.findAll();
     }
 }
