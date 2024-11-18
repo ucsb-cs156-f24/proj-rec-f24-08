@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import edu.ucsb.cs156.rec.entities.RecommendationRequest;
-import edu.ucsb.cs156.rec.entities.UCSBDate;
 import edu.ucsb.cs156.rec.errors.EntityNotFoundException;
 import edu.ucsb.cs156.rec.repositories.RecommendationRequestRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,10 +54,15 @@ public class RecommendationRequestController extends ApiController {
     /**
      * Create a new recommendation request
      * 
-     * @param quarterYYYYQ  the quarter in the format YYYYQ
-     * @param name          the name of the date
-     * @param localDateTime the date
-     * @return the saved ucsbdate
+     * @param professorName       the name of the professor
+     * @param professorEmail      the email of the professor
+     * @param requesterName       the name of the requester
+     * @param recommendationTypes the types of recommendations
+     * @param details             the details of the request
+     * @param status              the status of the request
+     * @param submissionDate      the submission date of the request
+     * @param completionDate      the completion date of the request
+     * @return the saved recommendation request
      */
 
     @Operation(summary = "Create a new recommendation request")
@@ -98,8 +102,8 @@ public class RecommendationRequestController extends ApiController {
     /**
      * Delete a RecommendationRequest
      * 
-     * @param id the id of the date to delete
-     * @return a message indicating the date was deleted
+     * @param id the id of the RecommendationRequest to delete
+     * @return a message indicating that the RecommendationRequest was deleted
      */
     @Operation(summary = "Delete a RecommendationRequest")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -116,9 +120,9 @@ public class RecommendationRequestController extends ApiController {
     /**
      * Update a single Recommendation Request
      * 
-     * @param id       id of the date to update
-     * @param incoming the new date
-     * @return the updated date object
+     * @param id       the id of the Recommendation Request to update
+     * @param incoming the updated Recommendation Request
+     * @return the updated Recommendation Request object
      */
     @Operation(summary = "Update a single date")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
