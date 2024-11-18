@@ -274,11 +274,11 @@ public class RecommendationRequestControllerTest extends ControllerTestCase {
                 .professorName("Singh")
                 .professorEmail("ambuj@cs.ucsb.edu")
                 .requesterName("Sara")
-                .recommendationTypes("rec type")
-                .details("details")
-                .status("status")
-                .submissionDate(LocalDateTime.parse("2022-01-03T00:00:00"))
-                .completionDate(LocalDateTime.parse("2022-01-03T00:00:00"))
+                .recommendationTypes("new rec type")
+                .details("new details")
+                .status("new status")
+                .submissionDate(LocalDateTime.parse("2022-02-03T00:00:00"))
+                .completionDate(LocalDateTime.parse("2022-02-03T00:00:00"))
                 .build();
 
         String requestBody = mapper.writeValueAsString(recReqEdited);
