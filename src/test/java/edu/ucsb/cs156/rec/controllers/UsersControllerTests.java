@@ -23,8 +23,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Map;
-import java.util.Optional;
 
 @WebMvcTest(controllers = UsersController.class)
 @Import(TestConfig.class)
