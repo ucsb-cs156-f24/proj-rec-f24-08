@@ -53,7 +53,7 @@
                   },
                   {
                     "column": {
-                      "name": "RECOMMENDATION_TYPE",
+                      "name": "RECOMMENDATION_TYPES",
                       "type": "VARCHAR(255)"
                     }
                   },
@@ -61,6 +61,18 @@
                     "column": {
                       "name": "DETAILS",
                       "type": "VARCHAR(255)"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "STATUS",
+                      "type": "VARCHAR(255)"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "SUBMISSION_DATE",
+                      "type": "TIMESTAMP"
                     }
                   },
                   {

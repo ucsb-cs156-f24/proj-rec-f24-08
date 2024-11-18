@@ -28,8 +28,10 @@ public class RecommendationRequest {
   private String professorName;
   private String professorEmail;
   private String requesterName;
-  private String recommendationType;
+  private String recommendationTypes;
   private String details;
+  private String status;
 
+  private LocalDateTime submissionDate;
   private LocalDateTime completionDate;
 }
