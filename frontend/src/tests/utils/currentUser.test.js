@@ -235,6 +235,8 @@ describe("utils/currentUser tests", () => {
       // expect(() => hasRole({ currentUser: { data: { root: null } } }, "ROLE_USER")).not.toThrow();
       // expect(() => hasRole({ currentUser: { data: {} } }, "ROLE_USER")).not.toThrow();
       // expect(() => hasRole({ currentUser: { data: { root: {} } } }, "ROLE_USER")).not.toThrow();
+      // expect(() => hasRole({ currentUser: { data: undefined } }, "ROLE_USER")).not.toThrow();
+      // expect(() => hasRole({ currentUser: { data: { root: undefined } } }, "ROLE_USER")).not.toThrow();
       expect(
         hasRole(
           { currentUser: { data: { root: { rolesList: null } } } },
