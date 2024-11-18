@@ -127,7 +127,7 @@ public class RecommendationRequestControllerTest extends ControllerTestCase {
         verify(recommendationRequestRepository, times(1)).findById(eq(7L));
         Map<String, Object> json = responseToJson(response);
         assertEquals("EntityNotFoundException", json.get("type"));
-        assertEquals("Recommendation request with id 7 not found", json.get("message"));
+        assertEquals("RecommendationRequest with id 7 not found", json.get("message"));
     }
 
     @WithMockUser(roles = { "USER" })
@@ -231,7 +231,7 @@ public class RecommendationRequestControllerTest extends ControllerTestCase {
         verify(recommendationRequestRepository, times(1)).delete(any());
 
         Map<String, Object> json = responseToJson(response);
-        assertEquals("Recommendation request with id 15 deleted", json.get("message"));
+        assertEquals("RecommendationRequest with id 15 deleted", json.get("message"));
     }
 
     @WithMockUser(roles = { "ADMIN", "USER" })
@@ -251,7 +251,7 @@ public class RecommendationRequestControllerTest extends ControllerTestCase {
         // assert
         verify(recommendationRequestRepository, times(1)).findById(15L);
         Map<String, Object> json = responseToJson(response);
-        assertEquals("Recommendation request with id 15 not found", json.get("message"));
+        assertEquals("RecommendationRequest with id 15 not found", json.get("message"));
     }
 
     @WithMockUser(roles = { "ADMIN", "USER" })
@@ -333,7 +333,7 @@ public class RecommendationRequestControllerTest extends ControllerTestCase {
         // assert
         verify(recommendationRequestRepository, times(1)).findById(67L);
         Map<String, Object> json = responseToJson(response);
-        assertEquals("Recommendation request with id 67 not found", json.get("message"));
+        assertEquals("RecommendationRequest with id 67 not found", json.get("message"));
 
     }
 }
