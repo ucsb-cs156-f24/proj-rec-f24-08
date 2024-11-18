@@ -30,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/recommendationrequests")
 @RestController
 @Slf4j
-public class RecommendationRequestController {
+public class RecommendationRequestController  extends ApiController {
 
     @Autowired
     RecommendationRequestRepository recommendationRequestRepository;
