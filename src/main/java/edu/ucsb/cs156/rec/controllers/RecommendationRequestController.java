@@ -89,12 +89,18 @@ public class RecommendationRequestController {
         // For an explanation of @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
         // See: https://www.baeldung.com/spring-date-parameters
 
-        log.info("localDateTime={}", localDateTime);
+        log.info("localDateTime={}", submissionDate);
+        log.info("localDateTime={}", completionDate);
 
         RecommendationRequest recommendationRequest = new RecommendationRequest();
-        recommendationRequest.setQuarterYYYYQ(quarterYYYYQ);
-        recommendationRequest.setName(name);
-        recommendationRequest.setLocalDateTime(localDateTime);
+        recommendationRequest.setProfessorName(professorName);
+        recommendationRequest.setProfessorEmail(professorEmail);
+        recommendationRequest.setRequesterName(requesterName);
+        recommendationRequest.setRecommendationTypes(recommendationTypes);
+        recommendationRequest.setDetails(details);
+        recommendationRequest.setStatus(status);
+        recommendationRequest.setSubmissionDate(submissionDate);
+        recommendationRequest.setCompletionDate(completionDate);
 
         RecommendationRequest savedRecommendationRequest = recommendationRequestRepository.save(recommendationRequest);
 
