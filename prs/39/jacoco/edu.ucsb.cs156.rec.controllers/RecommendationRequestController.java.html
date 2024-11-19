@@ -76,7 +76,7 @@ import lombok.extern.slf4j.Slf4j;
             @Parameter(name = &quot;details&quot;) @RequestParam String details,
             @Parameter(name = &quot;status&quot;) @RequestParam String status,
             @Parameter(name = &quot;submissionDate&quot;, description = &quot;date (in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601)&quot;) @RequestParam(&quot;submissionDate&quot;) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime submissionDate,
-            @Parameter(name = &quot;completionDate&quot;, description = &quot;date (in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601)&quot;) @RequestParam(&quot;completionDate&quot;) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime completionDate)
+            @Parameter(name = &quot;completionDate&quot;, description = &quot;date (in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601)&quot;) @RequestParam(value = &quot;completionDate&quot;, required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime completionDate)
             throws JsonProcessingException {
         // For an explanation of @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
         // See: https://www.baeldung.com/spring-date-parameters
