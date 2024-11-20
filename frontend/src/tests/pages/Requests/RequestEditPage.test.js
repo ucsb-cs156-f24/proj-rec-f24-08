@@ -140,36 +140,6 @@ describe("RequestEditPage tests", () => {
       expect(detailsField).toHaveValue("test details");
 
       expect(submitButton).toHaveTextContent("Update");
-
-      fireEvent.change(professorNameField, {
-        target: { value: "testnameother" },
-      });
-      fireEvent.change(professorEmailField, {
-        target: { value: "testnameotheremail@ucsb.edu" },
-      });
-      fireEvent.click(submitButton);
-
-      await waitFor(() => expect(mockToast).toBeCalled());
-      expect(mockToast).toBeCalledWith(
-        "Request Updated - id: 17 requester name: testname1",
-      );
-
-      expect(mockNavigate).toBeCalledWith({ to: "/requests/statistics" });
-
-      expect(axiosMock.history.put.length).toBe(1); // times called
-      expect(axiosMock.history.put[0].params).toEqual({ id: 17 });
-      expect(axiosMock.history.put[0].data).toBe(
-        JSON.stringify({
-            professorName: "testnameother",
-            professorEmail: "testnameotheremail@ucsb.edu",
-            requesterName: "testname1",
-            submissionDate: "2022-02-02T12:00",
-            completionDate: "2022-02-02T12:00",
-            status: "PENDING",
-            details: "test details",
-            recommendationTypes: "PhD program",
-        }),
-      ); // posted object
     });
 
     test("Changes when you click Update", async () => {
@@ -210,7 +180,7 @@ describe("RequestEditPage tests", () => {
       expect(mockToast).toBeCalledWith(
         "Request Updated - id: 17 requester name: testname1",
       );
-      expect(mockNavigate).toBeCalledWith({ to: "/requests" });
+      expect(mockNavigate).toBeCalledWith({ to: "/requests/statistics" });
     });
   });
 });

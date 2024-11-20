@@ -39,7 +39,7 @@ export default function RecommendationRequestEditPage({ storybook = false }) {
         // completionDate: request.completionDate, // nothing yet because haven't completed? - are we allowed to not submit a value?
         status: "PENDING",
         details: request.recommendationTypes !== "Other" ? request.details : "", // in the case that Other is not selected
-        recommendationTypes: request.recommendationTypes === "Other" ? request.recommendationTypes : request.details,
+        recommendationTypes: request.recommendationTypes === "Other" ? request.details : request.recommendationTypes,
     },
   });
 
