@@ -60,7 +60,7 @@ export default function AppNavbar({
               )}
               {currentUser && currentUser.loggedIn ? (
                 <>
-                  <Nav.Link as={Link} to="/recommendationrequests">
+                  <Nav.Link as={Link} to="/requests">
                     Recommendation Request
                   </Nav.Link>
                 </>
