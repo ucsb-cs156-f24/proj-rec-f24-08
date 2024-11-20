@@ -87,7 +87,7 @@ describe("utils/useBackend tests", () => {
 
       var axiosMock = new AxiosMockAdapter(axios);
 
-      axiosMock.onPost("/api/recommendationrequests/post").reply(202, {
+      axiosMock.onPost("/api/recommendationrequest/post").reply(202, {
         id: 17,
         professorName: "test",
         professorEmail: "testemail@ucsb.edu",
@@ -100,7 +100,7 @@ describe("utils/useBackend tests", () => {
       });
 
       const objectToAxiosParams = (request) => ({
-        url: "/api/recommendationrequests/post",
+        url: "/api/recommendationrequest/post",
         method: "POST",
         params: {
           professorName: request.professorName,
@@ -123,7 +123,7 @@ describe("utils/useBackend tests", () => {
       const { result } = renderHook(
         () =>
           useBackendMutation(objectToAxiosParams, { onSuccess }, [
-            "/api/recommendationrequests/all",
+            "/api/recommendationrequest/all",
           ]),
         { wrapper },
       );
@@ -164,10 +164,10 @@ describe("utils/useBackend tests", () => {
       );
 
       const axiosMock = new AxiosMockAdapter(axios);
-      axiosMock.onPost("/api/recommendationrequests/post").reply(404);
+      axiosMock.onPost("/api/recommendationrequest/post").reply(404);
 
       const objectToAxiosParams = (request) => ({
-        url: "/api/recommendationrequests/post",
+        url: "/api/recommendationrequest/post",
         method: "POST",
         params: {
           professorName: request.professorName,
