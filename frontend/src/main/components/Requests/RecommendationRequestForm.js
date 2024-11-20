@@ -105,9 +105,11 @@ function RecommendationRequestForm({
                {...register("recommendationTypes")}
                onChange={checkDetailsDisabled}
              >
-               <option value="option1">Option 1 - REPLACE ME</option>
-               <option value="option2">Option 2 - REPLACE ME</option>
-               <option value="other">Other</option>
+               <option value="CS Department BS/MS program">CS Department BS/MS program</option>
+               <option value="Scholarship or Fellowship">Scholarship or Fellowship</option>
+               <option value="MS program (other than CS Dept BS/MS)">MS program (other than CS Dept BS/MS)</option>
+               <option value="PhD program">PhD program</option>
+               <option value="Other">Other</option>
              </Form.Select>
            </Form.Group>
          </Col>
