@@ -20,7 +20,7 @@ const recommendationRequestFixtures = {
       professorEmail: "testemail1@ucsb.edu",
       requesterName: "recname1",
       submissionDate: "2022-02-02T12:00",
-      completionDate: "2022-02-02T12:00",
+      completionDate: "",
       status: "PENDING",
       details: "test details",
       recommendationTypes: "CS Department BS/MS program",
