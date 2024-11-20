@@ -95,7 +95,7 @@ describe("RecommendationRequestForm tests", () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByText(/Please enter a valid email/)).toBeInTheDocument();
+      expect(screen.getByText(/Enter an email address/)).toBeInTheDocument();
     });
   });
 });

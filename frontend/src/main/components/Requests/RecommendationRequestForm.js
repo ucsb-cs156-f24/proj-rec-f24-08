@@ -1,7 +1,6 @@
 import { Button, Form, Row, Col } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 
 function RecommendationRequestForm({
   initialContents,
@@ -15,13 +14,6 @@ function RecommendationRequestForm({
     handleSubmit,
   } = useForm({ defaultValues: initialContents || {} });
   // Stryker restore all
-
-  // allows us to conditionally enable/disable the details field if "Other" is selected - means they want to input a different recommendationType
-  const [isDisabled, setIsDisabled] = useState(false);
-
-  const checkDetailsDisabled = (event) => {
-    setIsDisabled(event.target.value === "Other");
-  };
 
   const navigate = useNavigate();
 
@@ -61,6 +53,9 @@ function RecommendationRequestForm({
                 required: true,
               })}
             />
+            <Form.Control.Feedback type="invalid">
+              {errors.professorName && "Professor Name is required. "}
+            </Form.Control.Feedback>
           </Form.Group>
         </Col>
         <Col>
@@ -75,6 +70,9 @@ function RecommendationRequestForm({
                 required: true,
               })}
             />
+            <Form.Control.Feedback type="invalid">
+              {errors.professorEmail && "Professor Email is required. "}
+            </Form.Control.Feedback>
           </Form.Group>
         </Col>
         <Col>
@@ -89,6 +87,9 @@ function RecommendationRequestForm({
                 required: true,
               })}
             />
+            <Form.Control.Feedback type="invalid">
+              {errors.requesterName && "Requester Name is required. "}
+            </Form.Control.Feedback>
           </Form.Group>
         </Col>
       </Row>
@@ -105,8 +106,7 @@ function RecommendationRequestForm({
                {...register("recommendationTypes", {
                 required: true,
                })}
-               onChange={checkDetailsDisabled}
-             >
+               >
                <option value="CS Department BS/MS program">CS Department BS/MS program</option>
                <option value="Scholarship or Fellowship">Scholarship or Fellowship</option>
                <option value="MS program (other than CS Dept BS/MS)">MS program (other than CS Dept BS/MS)</option>
@@ -118,14 +118,13 @@ function RecommendationRequestForm({
          <Col>
            <Form.Group className="mb-3">
              <Form.Label htmlFor="details">Details</Form.Label>
-             <Form.Select
+             <Form.Control
                data-testid="RecommendationRequestForm-details"
                id="details"
                type="text"
                isInvalid={Boolean(errors.details)}
                {...register("details")}
-                disabled={isDisabled}>
-             </Form.Select>
+            />
            </Form.Group>
          </Col>
         </Row>
