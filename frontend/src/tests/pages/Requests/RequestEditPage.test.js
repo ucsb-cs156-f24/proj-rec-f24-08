@@ -48,7 +48,9 @@ describe("RequestEditPage tests", () => {
       axiosMock
         .onGet("/api/systemInfo")
         .reply(200, systemInfoFixtures.showingNeither);
-      axiosMock.onGet("/api/recommendationrequest", { params: { id: 17 } }).timeout();
+      axiosMock
+        .onGet("/api/recommendationrequest", { params: { id: 17 } })
+        .timeout();
     });
 
     const queryClient = new QueryClient();
@@ -63,7 +65,9 @@ describe("RequestEditPage tests", () => {
         </QueryClientProvider>,
       );
       await screen.findByText("Edit Request");
-      expect(screen.queryByTestId("RecommendationRequestForm-professorName")).not.toBeInTheDocument();
+      expect(
+        screen.queryByTestId("RecommendationRequestForm-professorName"),
+      ).not.toBeInTheDocument();
       restoreConsole();
     });
   });
@@ -80,27 +84,29 @@ describe("RequestEditPage tests", () => {
       axiosMock
         .onGet("/api/systemInfo")
         .reply(200, systemInfoFixtures.showingNeither);
-      axiosMock.onGet("/api/recommendationrequest", { params: { id: 17 } }).reply(200, {
-         id: 17,
-         professorName: "test",
-         professorEmail: "testemail@ucsb.edu",
-         requesterName: "testname1",
-         submissionDate: "2022-02-02T12:00",
-         completionDate: "2022-02-02T12:00",
-         status: "PENDING",
-         details: "test details",
-         recommendationTypes: "PhD program",
-      });
+      axiosMock
+        .onGet("/api/recommendationrequest", { params: { id: 17 } })
+        .reply(200, {
+          id: 17,
+          professorName: "test",
+          professorEmail: "testemail@ucsb.edu",
+          requesterName: "testname1",
+          submissionDate: "2022-02-02T12:00",
+          completionDate: "2022-02-02T12:00",
+          status: "PENDING",
+          details: "test details",
+          recommendationTypes: "PhD program",
+        });
       axiosMock.onPut("/api/recommendationrequest").reply(200, {
-         id: "17",
-         professorName: "testnameother",
-         professorEmail: "testnameotheremail@ucsb.edu",
-         requesterName: "testname1",
-         submissionDate: "2022-02-02T12:00",
-         completionDate: "2022-02-02T12:00",
-         status: "PENDING",
-         details: "test details",
-         recommendationTypes: "PhD program",
+        id: "17",
+        professorName: "testnameother",
+        professorEmail: "testnameotheremail@ucsb.edu",
+        requesterName: "testname1",
+        submissionDate: "2022-02-02T12:00",
+        completionDate: "2022-02-02T12:00",
+        status: "PENDING",
+        details: "test details",
+        recommendationTypes: "PhD program",
       });
     });
 
@@ -118,13 +124,25 @@ describe("RequestEditPage tests", () => {
       await screen.findByTestId("RecommendationRequestForm-id");
 
       const idField = screen.getByTestId("RecommendationRequestForm-id");
-      const professorNameField = screen.getByTestId("RecommendationRequestForm-professorName");
-      const professorEmailField = screen.getByTestId("RecommendationRequestForm-professorEmail");
-      const requesterNameField = screen.getByTestId("RecommendationRequestForm-requesterName");
-      const recommendationTypesField = screen.getByTestId("RecommendationRequestForm-recommendationTypes");
-      const detailsField = screen.getByTestId("RecommendationRequestForm-details");
+      const professorNameField = screen.getByTestId(
+        "RecommendationRequestForm-professorName",
+      );
+      const professorEmailField = screen.getByTestId(
+        "RecommendationRequestForm-professorEmail",
+      );
+      const requesterNameField = screen.getByTestId(
+        "RecommendationRequestForm-requesterName",
+      );
+      const recommendationTypesField = screen.getByTestId(
+        "RecommendationRequestForm-recommendationTypes",
+      );
+      const detailsField = screen.getByTestId(
+        "RecommendationRequestForm-details",
+      );
 
-      const submitButton = screen.getByTestId("RecommendationRequestForm-submit");
+      const submitButton = screen.getByTestId(
+        "RecommendationRequestForm-submit",
+      );
 
       expect(idField).toBeInTheDocument();
       expect(idField).toHaveValue("17");
@@ -154,14 +172,25 @@ describe("RequestEditPage tests", () => {
       await screen.findByTestId("RecommendationRequestForm-id");
 
       const idField = screen.getByTestId("RecommendationRequestForm-id");
-      const professorNameField = screen.getByTestId("RecommendationRequestForm-professorName");
-      const professorEmailField = screen.getByTestId("RecommendationRequestForm-professorEmail");
-      const requesterNameField = screen.getByTestId("RecommendationRequestForm-requesterName");
-      const recommendationTypesField = screen.getByTestId("RecommendationRequestForm-recommendationTypes");
-      const detailsField = screen.getByTestId("RecommendationRequestForm-details");
+      const professorNameField = screen.getByTestId(
+        "RecommendationRequestForm-professorName",
+      );
+      const professorEmailField = screen.getByTestId(
+        "RecommendationRequestForm-professorEmail",
+      );
+      const requesterNameField = screen.getByTestId(
+        "RecommendationRequestForm-requesterName",
+      );
+      const recommendationTypesField = screen.getByTestId(
+        "RecommendationRequestForm-recommendationTypes",
+      );
+      const detailsField = screen.getByTestId(
+        "RecommendationRequestForm-details",
+      );
 
-      const submitButton = screen.getByTestId("RecommendationRequestForm-submit");
-
+      const submitButton = screen.getByTestId(
+        "RecommendationRequestForm-submit",
+      );
 
       expect(idField).toHaveValue("17");
       expect(professorNameField).toHaveValue("test");

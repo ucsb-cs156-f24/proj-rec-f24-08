@@ -32,19 +32,24 @@ export default function RecommendationRequestEditPage({ storybook = false }) {
       id: request.id,
     },
     data: {
-        professorName: request.professorName,
-        professorEmail: request.professorEmail,
-        requesterName: request.requesterName,
-        submissionDate: new Date().toISOString(), // gets current date
-        // completionDate: request.completionDate, // nothing yet because haven't completed? - are we allowed to not submit a value?
-        status: "PENDING",
-        details: request.recommendationTypes !== "Other" ? request.details : "", // in the case that Other is not selected
-        recommendationTypes: request.recommendationTypes === "Other" ? request.details : request.recommendationTypes,
+      professorName: request.professorName,
+      professorEmail: request.professorEmail,
+      requesterName: request.requesterName,
+      submissionDate: new Date().toISOString(), // gets current date
+      // completionDate: request.completionDate, // nothing yet because haven't completed? - are we allowed to not submit a value?
+      status: "PENDING",
+      details: request.recommendationTypes !== "Other" ? request.details : "", // in the case that Other is not selected
+      recommendationTypes:
+        request.recommendationTypes === "Other"
+          ? request.details
+          : request.recommendationTypes,
     },
   });
 
   const onSuccess = (request) => {
-    toast(`Request Updated - id: ${request.id} requester name: ${request.requesterName}`);
+    toast(
+      `Request Updated - id: ${request.id} requester name: ${request.requesterName}`,
+    );
   };
 
   const mutation = useBackendMutation(
