@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -173,15 +173,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -189,11 +189,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -232,8 +232,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -241,7 +241,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -251,7 +251,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -270,16 +270,16 @@ import {
 import { useNavigate } from "react-router-dom";
 import { hasRole } from "main/utils/currentUser";
 &nbsp;
-export default function <span class="fstat-no" title="function not covered" >RecommendationRequestTable(</span>{ requests, currentUser }) {
-  const navigate = <span class="cstat-no" title="statement not covered" >useNavigate();</span>
+export default function RecommendationRequestTable({ requests, currentUser }) {
+  const navigate = useNavigate();
 &nbsp;
-  const editCallback = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(c</span>ell) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    navigate(`/requests/edit/${cell.row.values.id}`);</span>
+  const editCallback = (cell) =&gt; {
+    navigate(`/requests/edit/${cell.row.values.id}`);
   };
 &nbsp;
   // Stryker disable all : hard to test for query caching
 &nbsp;
-  const deleteMutation = <span class="cstat-no" title="statement not covered" >useBackendMutation(</span>
+  const deleteMutation = useBackendMutation(
     cellToAxiosParamsDelete,
     { onSuccess: onDeleteSuccess },
     ["/api/recommendationrequest/all"],
@@ -287,11 +287,11 @@ export default function <span class="fstat-no" title="function not covered" >Rec
   // Stryker restore all
 &nbsp;
   // Stryker disable next-line all : TODO try to make a good test for this
-  const deleteCallback = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (cell) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    deleteMutation.mutate(cell);</span>
+  const deleteCallback = async (cell) =&gt; {
+    deleteMutation.mutate(cell);
   };
 &nbsp;
-  const columns = <span class="cstat-no" title="statement not covered" >[</span>
+  const columns = [
     {
       Header: "id",
       accessor: "id", // accessor is the "key" in the data
@@ -330,8 +330,8 @@ export default function <span class="fstat-no" title="function not covered" >Rec
     },
   ];
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (hasRole(currentUser, "ROLE_ADMIN")) {</span>
-<span class="cstat-no" title="statement not covered" >    columns.push(</span>
+  if (hasRole(currentUser, "ROLE_ADMIN")) {
+    columns.push(
       ButtonColumn(
         "Edit",
         "primary",
@@ -339,7 +339,7 @@ export default function <span class="fstat-no" title="function not covered" >Rec
         "RecommendationRequestTable",
       ),
     );
-<span class="cstat-no" title="statement not covered" >    columns.push(</span>
+    columns.push(
       ButtonColumn(
         "Delete",
         "danger",
@@ -349,7 +349,7 @@ export default function <span class="fstat-no" title="function not covered" >Rec
     );
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;OurTable
       data={requests}
       columns={columns}
@@ -364,7 +364,7 @@ export default function <span class="fstat-no" title="function not covered" >Rec
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-11-20T19:48:13.390Z
+                at 2024-11-20T20:11:43.320Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
