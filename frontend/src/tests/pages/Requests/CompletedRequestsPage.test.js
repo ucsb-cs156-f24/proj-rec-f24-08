@@ -5,7 +5,7 @@ import { MemoryRouter } from "react-router-dom";
 
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
-import { recommendationRequestsFixtures } from "fixtures/recommendationRequestsFixtures";
+import { recommendationRequestsFixtures } from "fixtures/recommendationRequestFixtures";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
 
