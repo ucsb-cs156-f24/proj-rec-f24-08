@@ -2,11 +2,11 @@ import React from "react";
 import { useBackend } from "main/utils/useBackend";
 
 import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
-import RecommendationRequestTable from "main/components/RecommendationRequests/RecommendationRequestTable";
-import { useCurrentUser } from "main/utils/currentUser";
+// import RecommendationRequestTable from "main/components/RecommendationRequests/RecommendationRequestTable";
+// import { useCurrentUser } from "main/utils/currentUser";
 
 export default function CompletedRequestsPage() {
-  const currentUser = useCurrentUser();
+  // const currentUser = useCurrentUser();
 
   const {
     data: recommendations,
@@ -19,11 +19,15 @@ export default function CompletedRequestsPage() {
     // Stryker disable next-line all : don't test default value of empty list
     [],
   );
+  const filtered_recs = recommendations.filter(item => item.status === "COMPLETED" || item.status === "DENIED");
+  console.log(filtered_recs)
   return (
     <BasicLayout>
       <div className="pt-2">
         <h1>Completed Recommendations</h1>
-        <RecommendationRequestTable recommendations={recommendations} currentUser={currentUser} />
+        {/* {{ currentUser}}
+        {{ recommendations }} */}
+        {/* <RecommendationRequestTable recommendations={filtered_recs} currentUser={currentUser} /> */}
       </div>
     </BasicLayout>
   );
