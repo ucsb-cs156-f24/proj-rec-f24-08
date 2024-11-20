@@ -9,7 +9,7 @@ const recommendationRequestFixtures = {
       completionDate: "2022-02-02T12:00",
       status: "PENDING",
       details: "test details",
-      recommendationTypes: "this type",
+      recommendationTypes: "CS Department BS/MS program",
     },
   ],
 
@@ -23,7 +23,7 @@ const recommendationRequestFixtures = {
       completionDate: "2022-02-02T12:00",
       status: "PENDING",
       details: "test details",
-      recommendationTypes: "this type 1",
+      recommendationTypes: "CS Department BS/MS program",
     },
 
     {
@@ -35,7 +35,7 @@ const recommendationRequestFixtures = {
       completionDate: "2022-02-02T12:00",
       status: "COMPLETED",
       details: "test details",
-      recommendationTypes: "this type 2",
+      recommendationTypes: "MS program (other than CS Dept BS/MS)",
     },
 
     {
@@ -47,7 +47,7 @@ const recommendationRequestFixtures = {
       completionDate: "2022-02-02T12:00",
       status: "DENIED",
       details: "test details",
-      recommendationTypes: "this type 3",
+      recommendationTypes: "Scholarship or Fellowship",
     },
   ],
 };
