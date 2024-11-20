@@ -77,9 +77,7 @@ describe("RequestEditPage tests", () => {
   });
 
   describe("tests where backend is working normally", () => {
-
-    beforeEach(() => {
-    });
+    beforeEach(() => {});
 
     const queryClient = new QueryClient();
 
