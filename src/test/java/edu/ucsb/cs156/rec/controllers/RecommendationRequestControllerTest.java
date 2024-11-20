@@ -41,7 +41,7 @@ public class RecommendationRequestControllerTest extends ControllerTestCase {
     @MockBean
     UserRepository userRepository;
 
-    // Authorization tests for /api/recommendationrequests/all
+    // Authorization tests for /api/recommendationrequest/all
 
     @Test
     public void logged_out_users_cannot_get_all() throws Exception {
@@ -56,7 +56,7 @@ public class RecommendationRequestControllerTest extends ControllerTestCase {
                 .andExpect(status().is(200)); // logged in as user can get all
     }
 
-    // Authorization tests for /api/recommendationrequests
+    // Authorization tests for /api/recommendationrequest
 
     @Test
     public void logged_out_users_cannot_get_by_id() throws Exception {
@@ -64,7 +64,7 @@ public class RecommendationRequestControllerTest extends ControllerTestCase {
                 .andExpect(status().is(403)); // logged out users can't get by id
     }
 
-    // Authorization tests for /api/recommendationrequests/post
+    // Authorization tests for /api/recommendationrequest/post
 
     @Test
     public void logged_out_users_cannot_post() throws Exception {
