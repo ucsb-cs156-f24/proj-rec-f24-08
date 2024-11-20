@@ -36,7 +36,6 @@ export default function RecommendationRequestEditPage({ storybook = false }) {
       professorEmail: request.professorEmail,
       requesterName: request.requesterName,
       submissionDate: new Date().toISOString(), // gets current date
-      // completionDate: request.completionDate, // nothing yet because haven't completed? - are we allowed to not submit a value?
       status: "PENDING",
       details: request.recommendationTypes !== "Other" ? request.details : "", // in the case that Other is not selected
       recommendationTypes:

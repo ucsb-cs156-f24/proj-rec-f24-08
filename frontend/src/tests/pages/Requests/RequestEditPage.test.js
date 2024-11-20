@@ -101,11 +101,11 @@ describe("RequestEditPage tests", () => {
         id: "17",
         professorName: "testnameother",
         professorEmail: "testnameotheremail@ucsb.edu",
-        requesterName: "testname1",
+        requesterName: "testname2",
         submissionDate: "2022-02-02T12:00",
         completionDate: "2022-02-02T12:00",
         status: "PENDING",
-        details: "test details",
+        details: "test details 2",
         recommendationTypes: "PhD program",
       });
     });
@@ -199,15 +199,27 @@ describe("RequestEditPage tests", () => {
       expect(recommendationTypesField).toHaveValue("PhD program");
       expect(detailsField).toHaveValue("test details");
 
+      fireEvent.change(professorNameField, {
+        target: { value: "testnameother" },
+      });
+      fireEvent.change(professorEmailField, {
+        target: { value: "testemail2@ucsb.edu" },
+      });
       fireEvent.change(requesterNameField, {
         target: { value: "testname2" },
+      });
+      fireEvent.change(recommendationTypesField, {
+        target: { value: "PhD program" },
+      });
+      fireEvent.change(detailsField, {
+        target: { value: "test details 2" },
       });
 
       fireEvent.click(submitButton);
 
       await waitFor(() => expect(mockToast).toBeCalled());
       expect(mockToast).toBeCalledWith(
-        "Request Updated - id: 17 requester name: testname1",
+        "Request Updated - id: 17 requester name: testname2",
       );
       expect(mockNavigate).toBeCalledWith({ to: "/requests/statistics" });
     });
