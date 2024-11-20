@@ -102,7 +102,9 @@ function RecommendationRequestForm({
                id="recommendationTypes"
                type="string"
                isInvalid={Boolean(errors.recommendationTypes)}
-               {...register("recommendationTypes")}
+               {...register("recommendationTypes", {
+                required: true,
+               })}
                onChange={checkDetailsDisabled}
              >
                <option value="CS Department BS/MS program">CS Department BS/MS program</option>
