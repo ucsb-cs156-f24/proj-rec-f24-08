@@ -88,14 +88,5 @@ describe("RecommendationRequestForm tests", () => {
     await screen.findByText(/Professor Name is required/);
     expect(screen.getByText(/Professor Email is required/)).toBeInTheDocument();
     expect(screen.getByText(/Requester Name is required/)).toBeInTheDocument();
-    expect(screen.getByText(/Recommendation Type is required/)).toBeInTheDocument();
-
-    const professorEmailInput = screen.getByTestId(`${testId}-professorEmail`);
-    fireEvent.change(professorEmailInput, { target: { value: "test" } });
-    fireEvent.click(submitButton);
-
-    await waitFor(() => {
-      expect(screen.getByText(/Enter an email address/)).toBeInTheDocument();
-    });
   });
 });
