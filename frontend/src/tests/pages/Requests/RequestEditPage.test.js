@@ -105,8 +105,8 @@ describe("RequestEditPage tests", () => {
         submissionDate: "2022-02-02T12:00",
         completionDate: "2022-02-02T12:00",
         status: "PENDING",
-        details: "test details 2",
-        recommendationTypes: "PhD program",
+        details: "",
+        recommendationTypes: "test_details",
       });
     });
 
@@ -203,23 +203,23 @@ describe("RequestEditPage tests", () => {
         target: { value: "testnameother" },
       });
       fireEvent.change(professorEmailField, {
-        target: { value: "testemail2@ucsb.edu" },
+        target: { value: "testnameotheremail@ucsb.edu" },
       });
       fireEvent.change(requesterNameField, {
         target: { value: "testname2" },
       });
       fireEvent.change(recommendationTypesField, {
-        target: { value: "PhD program" },
+        target: { value: "Other" },
       });
       fireEvent.change(detailsField, {
-        target: { value: "test details 2" },
+        target: { value: "test_details" },
       });
 
       fireEvent.click(submitButton);
 
       await waitFor(() => expect(mockToast).toBeCalled());
       expect(mockToast).toBeCalledWith(
-        "Request Updated - id: 17 requester name: testname2",
+        "Request Updated - id: 17 professor name: testnameother professorEmail: testnameotheremail@ucsb.edu requester name: testname2 recommendation: test_details details: ",
       );
       expect(mockNavigate).toBeCalledWith({ to: "/requests/statistics" });
     });

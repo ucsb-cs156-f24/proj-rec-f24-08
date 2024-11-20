@@ -47,7 +47,7 @@ export default function RecommendationRequestEditPage({ storybook = false }) {
 
   const onSuccess = (request) => {
     toast(
-      `Request Updated - id: ${request.id} requester name: ${request.requesterName}`,
+      `Request Updated - id: ${request.id} professor name: ${request.professorName} professorEmail: ${request.professorEmail} requester name: ${request.requesterName} recommendation: ${request.recommendationTypes} details: ${request.details}`,
     );
   };
 
