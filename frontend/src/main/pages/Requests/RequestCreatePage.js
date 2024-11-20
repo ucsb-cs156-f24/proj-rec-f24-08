@@ -9,14 +9,17 @@ export default function RecommendationRequestCreatePage({ storybook = false }) {
     url: "/api/recommendationrequest/post",
     method: "POST",
     params: {
-        professorName: request.professorName,
-        professorEmail: request.professorEmail,
-        requesterName: request.requesterName,
-        submissionDate: new Date().toISOString(), // gets current date
-        // completionDate: request.completionDate, // nothing yet because haven't completed? - are we allowed to not submit a value?
-        status: "PENDING",
-        details: request.recommendationTypes !== "Other" ? request.details : "", // in the case that Other is not selected
-        recommendationTypes: request.recommendationTypes === "Other" ? request.details : request.recommendationTypes, // in the case that Other is selected and they are inputting a new rec type
+      professorName: request.professorName,
+      professorEmail: request.professorEmail,
+      requesterName: request.requesterName,
+      submissionDate: new Date().toISOString(), // gets current date
+      // completionDate: request.completionDate, // nothing yet because haven't completed? - are we allowed to not submit a value?
+      status: "PENDING",
+      details: request.recommendationTypes !== "Other" ? request.details : "", // in the case that Other is not selected
+      recommendationTypes:
+        request.recommendationTypes === "Other"
+          ? request.details
+          : request.recommendationTypes, // in the case that Other is selected and they are inputting a new rec type
     },
   });
 

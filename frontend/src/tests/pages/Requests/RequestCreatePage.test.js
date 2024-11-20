@@ -65,15 +65,15 @@ describe("RequestCreatePage tests", () => {
   test("on submit, makes request to backend, and redirects to /recommendationrequest/studentprofile", async () => {
     const queryClient = new QueryClient();
     const request = {
-        id: 1,
-        professorName: "test",
-        professorEmail: "testemail@ucsb.edu",
-        requesterName: "testname1",
-        submissionDate: "2022-02-02T12:00",
-        completionDate: "2022-02-02T12:00",
-        status: "PENDING",
-        details: "other_type",
-        recommendationTypes: "Other",
+      id: 1,
+      professorName: "test",
+      professorEmail: "testemail@ucsb.edu",
+      requesterName: "testname1",
+      submissionDate: "2022-02-02T12:00",
+      completionDate: "2022-02-02T12:00",
+      status: "PENDING",
+      details: "other_type",
+      recommendationTypes: "Other",
     };
 
     axiosMock.onPost("/api/recommendationrequest/post").reply(202, request);
@@ -99,7 +99,9 @@ describe("RequestCreatePage tests", () => {
     const requesterNameInput = screen.getByLabelText("Requester Name");
     expect(requesterNameInput).toBeInTheDocument();
 
-    const recommendationTypesInput = screen.getByLabelText("Recommendation Types");
+    const recommendationTypesInput = screen.getByLabelText(
+      "Recommendation Types",
+    );
     expect(recommendationTypesInput).toBeInTheDocument();
 
     const detailsInput = screen.getByLabelText("Details");
@@ -109,20 +111,26 @@ describe("RequestCreatePage tests", () => {
     expect(createButton).toBeInTheDocument();
 
     fireEvent.change(profNameInput, { target: { value: "test" } });
-    fireEvent.change(profEmailInput, { target: { value: "testemail@ucsb.edu" }});
+    fireEvent.change(profEmailInput, {
+      target: { value: "testemail@ucsb.edu" },
+    });
     fireEvent.change(requesterNameInput, { target: { value: "testname1" } });
-    fireEvent.change(recommendationTypesInput, { target: { value: "Other" }});
-    fireEvent.change(detailsInput, { target: { value: "other_type" }});
+    fireEvent.change(recommendationTypesInput, { target: { value: "Other" } });
+    fireEvent.change(detailsInput, { target: { value: "other_type" } });
     fireEvent.click(createButton);
 
     await waitFor(() => expect(axiosMock.history.post.length).toBe(1));
 
     expect(axiosMock.history.post[0].params.professorName).toBe("test");
-    expect(axiosMock.history.post[0].params.professorEmail).toBe("testemail@ucsb.edu");
+    expect(axiosMock.history.post[0].params.professorEmail).toBe(
+      "testemail@ucsb.edu",
+    );
     expect(axiosMock.history.post[0].params.requesterName).toBe("testname1");
     expect(axiosMock.history.post[0].params.status).toBe("PENDING");
     expect(axiosMock.history.post[0].params.details).toBe("");
-    expect(axiosMock.history.post[0].params.recommendationTypes).toBe("other_type");
+    expect(axiosMock.history.post[0].params.recommendationTypes).toBe(
+      "other_type",
+    );
 
     // assert - check that the toast was called with the expected message
     expect(mockToast).toBeCalledWith(
