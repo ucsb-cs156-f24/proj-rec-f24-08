@@ -4,9 +4,9 @@ import { Navigate } from "react-router-dom";
 import { useBackendMutation } from "main/utils/useBackend";
 import { toast } from "react-toastify";
 
-export default function RestaurantCreatePage({ storybook = false }) {
+export default function RecommendationRequestCreatePage({ storybook = false }) {
   const objectToAxiosParams = (request) => ({
-    url: "/api/recommendationrequests/post",
+    url: "/api/recommendationrequest/post",
     method: "POST",
     params: {
         professorName: request.professorName,
@@ -30,7 +30,7 @@ export default function RestaurantCreatePage({ storybook = false }) {
     objectToAxiosParams,
     { onSuccess },
     // Stryker disable next-line all : hard to set up test for caching
-    ["/api/recommendationrequests/all"], // mutation makes this key stale so that pages relying on it reload
+    ["/api/recommendationrequest/all"], // mutation makes this key stale so that pages relying on it reload
   );
 
   const { isSuccess } = mutation;
@@ -40,7 +40,7 @@ export default function RestaurantCreatePage({ storybook = false }) {
   };
 
   if (isSuccess && !storybook) {
-    return <Navigate to="/recommendationrequests/studentprofile" />;
+    return <Navigate to="/recommendationrequest/studentprofile" />;
   }
 
   return (

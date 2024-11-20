@@ -62,7 +62,7 @@ describe("RequestCreatePage tests", () => {
     });
   });
 
-  test("on submit, makes request to backend, and redirects to /recommendationrequests/studentprofile", async () => {
+  test("on submit, makes request to backend, and redirects to /recommendationrequest/studentprofile", async () => {
     const queryClient = new QueryClient();
     const request = {
         id: 1,
@@ -76,7 +76,7 @@ describe("RequestCreatePage tests", () => {
         recommendationTypes: "Other",
     };
 
-    axiosMock.onPost("/api/recommendationrequests/post").reply(202, request);
+    axiosMock.onPost("/api/recommendationrequest/post").reply(202, request);
 
     render(
       <QueryClientProvider client={queryClient}>
@@ -130,6 +130,6 @@ describe("RequestCreatePage tests", () => {
     expect(mockToast).toBeCalledWith(
       "New Request Created - id: 1 requester name: testname1",
     );
-    expect(mockNavigate).toBeCalledWith({ to: "/recommendationrequests/studentprofile" });
+    expect(mockNavigate).toBeCalledWith({ to: "/recommendationrequest/studentprofile" });
   });
 });
