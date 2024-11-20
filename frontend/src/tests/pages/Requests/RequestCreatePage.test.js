@@ -192,7 +192,9 @@ describe("RequestCreatePage tests", () => {
       target: { value: "testemail@ucsb.edu" },
     });
     fireEvent.change(requesterNameInput, { target: { value: "testname1" } });
-    fireEvent.change(recommendationTypesInput, { target: { value: "CS Department BS/MS program" } });
+    fireEvent.change(recommendationTypesInput, {
+      target: { value: "CS Department BS/MS program" },
+    });
     fireEvent.change(detailsInput, { target: { value: "other_type" } });
     fireEvent.click(createButton);
 
