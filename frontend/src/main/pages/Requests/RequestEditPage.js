@@ -46,8 +46,10 @@ export default function RecommendationRequestEditPage({ storybook = false }) {
   });
 
   const onSuccess = (request) => {
+  const details = request.recommendationTypes !== "Other" ? request.details : "";
+  const recs = request.recommendationTypes === "Other" ? request.details : request.recommendationTypes;
     toast(
-      `Request Updated - id: ${request.id} professor name: ${request.professorName} professorEmail: ${request.professorEmail} requester name: ${request.requesterName} recommendation: ${request.recommendationTypes} details: ${request.details}`,
+      `Request Updated - id: ${request.id} professor name: ${request.professorName} professorEmail: ${request.professorEmail} requester name: ${request.requesterName} recommendation: ${ recs } details: ${ details }`,
     );
   };
 
