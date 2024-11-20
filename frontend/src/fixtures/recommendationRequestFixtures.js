@@ -1,4 +1,4 @@
-const recommendationRequestsFixtures = {
+const recommendationRequestFixtures = {
     oneRecommendation: [
       {
         id: 1,
@@ -52,5 +52,5 @@ const recommendationRequestsFixtures = {
     ],
   };
   
-  export { recommendationRequestsFixtures };
+  export { recommendationRequestFixtures };
   
