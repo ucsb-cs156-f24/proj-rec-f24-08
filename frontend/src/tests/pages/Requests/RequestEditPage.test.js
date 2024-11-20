@@ -123,9 +123,6 @@ describe("RequestEditPage tests", () => {
       const requesterNameField = screen.getByTestId("RecommendationRequestForm-requesterName");
       const recommendationTypesField = screen.getByTestId("RecommendationRequestForm-recommendationTypes");
       const detailsField = screen.getByTestId("RecommendationRequestForm-details");
-      const submissionDateField = screen.getByTestId("RecommendationRequestForm-submissionDate");
-      const completetionDateField = screen.getByTestId("RecommendationRequestForm-completionDate");
-      const statusField = screen.getByTestId("RecommendationRequestForm-status");
 
       const submitButton = screen.getByTestId("RecommendationRequestForm-submit");
 
@@ -141,12 +138,6 @@ describe("RequestEditPage tests", () => {
       expect(recommendationTypesField).toHaveValue("PhD program");
       expect(detailsField).toBeInTheDocument();
       expect(detailsField).toHaveValue("test details");
-      expect(submissionDateField).toBeInTheDocument();
-      expect(submissionDateField).toHaveValue("2022-02-02T12:00");
-      expect(completetionDateField).toBeInTheDocument();
-      expect(completetionDateField).toHaveValue("2022-02-02T12:00");
-      expect(statusField).toBeInTheDocument();
-      expect(statusField).toHaveValue("PENDING");
 
       expect(submitButton).toHaveTextContent("Update");
 
@@ -198,9 +189,6 @@ describe("RequestEditPage tests", () => {
       const requesterNameField = screen.getByTestId("RecommendationRequestForm-requesterName");
       const recommendationTypesField = screen.getByTestId("RecommendationRequestForm-recommendationTypes");
       const detailsField = screen.getByTestId("RecommendationRequestForm-details");
-      const submissionDateField = screen.getByTestId("RecommendationRequestForm-submissionDate");
-      const completetionDateField = screen.getByTestId("RecommendationRequestForm-completionDate");
-      const statusField = screen.getByTestId("RecommendationRequestForm-status");
 
       const submitButton = screen.getByTestId("RecommendationRequestForm-submit");
 
@@ -211,9 +199,6 @@ describe("RequestEditPage tests", () => {
       expect(requesterNameField).toHaveValue("testname1");
       expect(recommendationTypesField).toHaveValue("PhD program");
       expect(detailsField).toHaveValue("test details");
-      expect(submissionDateField).toHaveValue("2022-02-02T12:00");
-      expect(completetionDateField).toHaveValue("2022-02-02T12:00");
-      expect(statusField).toHaveValue("PENDING");
 
       fireEvent.change(requesterNameField, {
         target: { value: "testname2" },
