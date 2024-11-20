@@ -91,20 +91,6 @@ function RecommendationRequestForm({
             />
           </Form.Group>
         </Col>
-        <Col>
-          <Form.Group className="mb-3">
-            <Form.Label htmlFor="requesterEmail">Requester Email</Form.Label>
-            <Form.Control
-              data-testid="RecommendationRequestForm-requesterEmail"
-              id="requesterEmail"
-              type="email"
-              isInvalid={Boolean(errors.requesterEmail)}
-              {...register("requesterEmail", {
-                required: true,
-              })}
-            />
-          </Form.Group>
-        </Col>
       </Row>
 
       <Row>
