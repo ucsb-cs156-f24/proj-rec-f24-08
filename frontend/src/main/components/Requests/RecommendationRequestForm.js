@@ -95,39 +95,47 @@ function RecommendationRequestForm({
       </Row>
 
       <Row>
-         <Col>
-           <Form.Group className="mb-3">
-             <Form.Label htmlFor="recommendationTypes">Recommendation Types</Form.Label>
-             <Form.Select
-               data-testid="RecommendationRequestForm-recommendationTypes"
-               id="recommendationTypes"
-               type="string"
-               isInvalid={Boolean(errors.recommendationTypes)}
-               {...register("recommendationTypes", {
+        <Col>
+          <Form.Group className="mb-3">
+            <Form.Label htmlFor="recommendationTypes">
+              Recommendation Types
+            </Form.Label>
+            <Form.Select
+              data-testid="RecommendationRequestForm-recommendationTypes"
+              id="recommendationTypes"
+              type="string"
+              isInvalid={Boolean(errors.recommendationTypes)}
+              {...register("recommendationTypes", {
                 required: true,
-               })}
-               >
-               <option value="CS Department BS/MS program">CS Department BS/MS program</option>
-               <option value="Scholarship or Fellowship">Scholarship or Fellowship</option>
-               <option value="MS program (other than CS Dept BS/MS)">MS program (other than CS Dept BS/MS)</option>
-               <option value="PhD program">PhD program</option>
-               <option value="Other">Other</option>
-             </Form.Select>
-           </Form.Group>
-         </Col>
-         <Col>
-           <Form.Group className="mb-3">
-             <Form.Label htmlFor="details">Details</Form.Label>
-             <Form.Control
-               data-testid="RecommendationRequestForm-details"
-               id="details"
-               type="text"
-               isInvalid={Boolean(errors.details)}
-               {...register("details")}
+              })}
+            >
+              <option value="CS Department BS/MS program">
+                CS Department BS/MS program
+              </option>
+              <option value="Scholarship or Fellowship">
+                Scholarship or Fellowship
+              </option>
+              <option value="MS program (other than CS Dept BS/MS)">
+                MS program (other than CS Dept BS/MS)
+              </option>
+              <option value="PhD program">PhD program</option>
+              <option value="Other">Other</option>
+            </Form.Select>
+          </Form.Group>
+        </Col>
+        <Col>
+          <Form.Group className="mb-3">
+            <Form.Label htmlFor="details">Details</Form.Label>
+            <Form.Control
+              data-testid="RecommendationRequestForm-details"
+              id="details"
+              type="text"
+              isInvalid={Boolean(errors.details)}
+              {...register("details")}
             />
-           </Form.Group>
-         </Col>
-        </Row>
+          </Form.Group>
+        </Col>
+      </Row>
 
       <Row>
         <Col>
