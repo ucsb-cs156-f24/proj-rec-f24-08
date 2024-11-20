@@ -30,7 +30,7 @@ describe("CompletedRequestsPage tests", () => {
   test("renders only recommendations with completed or denied statuses for professor user", async () => {
     setupUserOnly();
     axiosMock
-      .onGet("/api/recommendationrequests/all")
+      .onGet("/api/recommendationrequest/all")
       .reply(200, recommendationRequestsFixtures.threeRecommendations);
 
     render(
@@ -73,7 +73,7 @@ describe("CompletedRequestsPage tests", () => {
   test("renders empty table when backend unavailable, user only", async () => {
     setupUserOnly();
 
-    axiosMock.onGet("/api/recommendationrequests/all").timeout();
+    axiosMock.onGet("/api/recommendationrequest/all").timeout();
 
     const restoreConsole = mockConsole();
 
@@ -91,7 +91,7 @@ describe("CompletedRequestsPage tests", () => {
 
     const errorMessage = console.error.mock.calls[0][0];
     expect(errorMessage).toMatch(
-      "Error communicating with backend via GET on /api/recommendationrequests/all",
+      "Error communicating with backend via GET on /api/recommendationrequest/all",
     );
     restoreConsole();
   });
