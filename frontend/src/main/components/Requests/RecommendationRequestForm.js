@@ -105,9 +105,7 @@ function RecommendationRequestForm({
               id="recommendationTypes"
               type="string"
               isInvalid={Boolean(errors.recommendationTypes)}
-              {...register("recommendationTypes", {
-                required: true,
-              })}
+              {...register("recommendationTypes", {})}
             >
               <option value="CS Department BS/MS program">
                 CS Department BS/MS program
