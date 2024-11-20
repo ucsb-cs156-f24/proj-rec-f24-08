@@ -81,12 +81,7 @@ describe("RequestEditPage tests", () => {
         .onGet("/api/systemInfo")
         .reply(200, systemInfoFixtures.showingNeither);
       axiosMock.onGet("/api/recommendationrequest", { params: { id: 17 } }).reply(200, {
-        id: 17,
-        name: "Freebirds",
-        description: "Burritos",
-      });
-      axiosMock.onPut("/api/recommendationrequest").reply(200, {
-         id: "17",
+         id: 17,
          professorName: "test",
          professorEmail: "testemail@ucsb.edu",
          requesterName: "testname1",
@@ -94,7 +89,18 @@ describe("RequestEditPage tests", () => {
          completionDate: "2022-02-02T12:00",
          status: "PENDING",
          details: "test details",
-         recommendationTypes: "test",
+         recommendationTypes: "PhD program",
+      });
+      axiosMock.onPut("/api/recommendationrequest").reply(200, {
+         id: "17",
+         professorName: "testnameother",
+         professorEmail: "testnameotheremail@ucsb.edu",
+         requesterName: "testname1",
+         submissionDate: "2022-02-02T12:00",
+         completionDate: "2022-02-02T12:00",
+         status: "PENDING",
+         details: "test details",
+         recommendationTypes: "PhD program",
       });
     });
 
@@ -104,48 +110,73 @@ describe("RequestEditPage tests", () => {
       render(
         <QueryClientProvider client={queryClient}>
           <MemoryRouter>
-            <RestaurantEditPage />
+            <RequestEditPage />
           </MemoryRouter>
         </QueryClientProvider>,
       );
 
-      await screen.findByTestId("RestaurantForm-id");
+      await screen.findByTestId("RecommendationRequestForm-id");
 
-      const idField = screen.getByTestId("RestaurantForm-id");
-      const nameField = screen.getByTestId("RestaurantForm-name");
-      const descriptionField = screen.getByTestId("RestaurantForm-description");
-      const submitButton = screen.getByTestId("RestaurantForm-submit");
+      const idField = screen.getByTestId("RecommendationRequestForm-id");
+      const professorNameField = screen.getByTestId("RecommendationRequestForm-professorName");
+      const professorEmailField = screen.getByTestId("RecommendationRequestForm-professorEmail");
+      const requesterNameField = screen.getByTestId("RecommendationRequestForm-requesterName");
+      const recommendationTypesField = screen.getByTestId("RecommendationRequestForm-recommendationTypes");
+      const detailsField = screen.getByTestId("RecommendationRequestForm-details");
+      const submissionDateField = screen.getByTestId("RecommendationRequestForm-submissionDate");
+      const completetionDateField = screen.getByTestId("RecommendationRequestForm-completionDate");
+      const statusField = screen.getByTestId("RecommendationRequestForm-status");
+
+      const submitButton = screen.getByTestId("RecommendationRequestForm-submit");
 
       expect(idField).toBeInTheDocument();
       expect(idField).toHaveValue("17");
-      expect(nameField).toBeInTheDocument();
-      expect(nameField).toHaveValue("Freebirds");
-      expect(descriptionField).toBeInTheDocument();
-      expect(descriptionField).toHaveValue("Burritos");
+      expect(professorNameField).toBeInTheDocument();
+      expect(professorNameField).toHaveValue("test");
+      expect(professorEmailField).toBeInTheDocument();
+      expect(professorEmailField).toHaveValue("testemail@ucsb.edu");
+      expect(requesterNameField).toBeInTheDocument();
+      expect(requesterNameField).toHaveValue("testname1");
+      expect(recommendationTypesField).toBeInTheDocument();
+      expect(recommendationTypesField).toHaveValue("PhD program");
+      expect(detailsField).toBeInTheDocument();
+      expect(detailsField).toHaveValue("test details");
+      expect(submissionDateField).toBeInTheDocument();
+      expect(submissionDateField).toHaveValue("2022-02-02T12:00");
+      expect(completetionDateField).toBeInTheDocument();
+      expect(completetionDateField).toHaveValue("2022-02-02T12:00");
+      expect(statusField).toBeInTheDocument();
+      expect(statusField).toHaveValue("PENDING");
 
       expect(submitButton).toHaveTextContent("Update");
 
-      fireEvent.change(nameField, {
-        target: { value: "Freebirds World Burrito" },
+      fireEvent.change(professorNameField, {
+        target: { value: "testnameother" },
       });
-      fireEvent.change(descriptionField, {
-        target: { value: "Totally Giant Burritos" },
+      fireEvent.change(professorEmailField, {
+        target: { value: "testnameotheremail@ucsb.edu" },
       });
       fireEvent.click(submitButton);
 
       await waitFor(() => expect(mockToast).toBeCalled());
       expect(mockToast).toBeCalledWith(
-        "Restaurant Updated - id: 17 name: Freebirds World Burrito",
+        "Request Updated - id: 17 requester name: testname1",
       );
 
-      expect(mockNavigate).toBeCalledWith({ to: "/restaurants" });
+      expect(mockNavigate).toBeCalledWith({ to: "/requests" });
 
       expect(axiosMock.history.put.length).toBe(1); // times called
       expect(axiosMock.history.put[0].params).toEqual({ id: 17 });
       expect(axiosMock.history.put[0].data).toBe(
         JSON.stringify({
-          name: "Freebirds World Burrito",
-          description: "Totally Giant Burritos",
+            professorName: "testnameother",
+            professorEmail: "testnameotheremail@ucsb.edu",
+            requesterName: "testname1",
+            submissionDate: "2022-02-02T12:00",
+            completionDate: "2022-02-02T12:00",
+            status: "PENDING",
+            details: "test details",
+            recommendationTypes: "PhD program",
         }),
       ); // posted object
     });
@@ -154,35 +185,47 @@ describe("RequestEditPage tests", () => {
       render(
         <QueryClientProvider client={queryClient}>
           <MemoryRouter>
-            <RestaurantEditPage />
+            <RequestEditPage />
           </MemoryRouter>
         </QueryClientProvider>,
       );
 
-      await screen.findByTestId("RestaurantForm-id");
+      await screen.findByTestId("RecommendationRequestForm-id");
 
-      const idField = screen.getByTestId("RestaurantForm-id");
-      const nameField = screen.getByTestId("RestaurantForm-name");
-      const descriptionField = screen.getByTestId("RestaurantForm-description");
-      const submitButton = screen.getByTestId("RestaurantForm-submit");
+      const idField = screen.getByTestId("RecommendationRequestForm-id");
+      const professorNameField = screen.getByTestId("RecommendationRequestForm-professorName");
+      const professorEmailField = screen.getByTestId("RecommendationRequestForm-professorEmail");
+      const requesterNameField = screen.getByTestId("RecommendationRequestForm-requesterName");
+      const recommendationTypesField = screen.getByTestId("RecommendationRequestForm-recommendationTypes");
+      const detailsField = screen.getByTestId("RecommendationRequestForm-details");
+      const submissionDateField = screen.getByTestId("RecommendationRequestForm-submissionDate");
+      const completetionDateField = screen.getByTestId("RecommendationRequestForm-completionDate");
+      const statusField = screen.getByTestId("RecommendationRequestForm-status");
+
+      const submitButton = screen.getByTestId("RecommendationRequestForm-submit");
+
 
       expect(idField).toHaveValue("17");
-      expect(nameField).toHaveValue("Freebirds");
-      expect(descriptionField).toHaveValue("Burritos");
-      expect(submitButton).toBeInTheDocument();
+      expect(professorNameField).toHaveValue("test");
+      expect(professorEmailField).toHaveValue("testemail@ucsb.edu");
+      expect(requesterNameField).toHaveValue("testname1");
+      expect(recommendationTypesField).toHaveValue("PhD program");
+      expect(detailsField).toHaveValue("test details");
+      expect(submissionDateField).toHaveValue("2022-02-02T12:00");
+      expect(completetionDateField).toHaveValue("2022-02-02T12:00");
+      expect(statusField).toHaveValue("PENDING");
 
-      fireEvent.change(nameField, {
-        target: { value: "Freebirds World Burrito" },
+      fireEvent.change(requesterNameField, {
+        target: { value: "testname2" },
       });
-      fireEvent.change(descriptionField, { target: { value: "Big Burritos" } });
 
       fireEvent.click(submitButton);
 
       await waitFor(() => expect(mockToast).toBeCalled());
       expect(mockToast).toBeCalledWith(
-        "Restaurant Updated - id: 17 name: Freebirds World Burrito",
+        "Request Updated - id: 17 requester name: testname1",
       );
-      expect(mockNavigate).toBeCalledWith({ to: "/restaurants" });
+      expect(mockNavigate).toBeCalledWith({ to: "/requests" });
     });
   });
 });
