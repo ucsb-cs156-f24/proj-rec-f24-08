@@ -3,7 +3,7 @@ import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
 import { http, HttpResponse } from "msw";
 
-import RequestsCreatePage from "main/pages/Requests/RequestCreatePage";
+import RequestsCreatePage from "main/pages/RecommendationRequest/RequestCreatePage";
 
 export default {
   title: "pages/Requests/RequestsCreatePage",
