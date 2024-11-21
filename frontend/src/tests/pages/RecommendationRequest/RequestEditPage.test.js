@@ -1,7 +1,7 @@
 import { fireEvent, render, waitFor, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
-import RequestEditPage from "main/pages/Requests/RequestEditPage";
+import RequestEditPage from "main/pages/RecommendationRequest/RequestEditPage";
 
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
