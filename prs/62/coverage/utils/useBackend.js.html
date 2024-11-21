@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">43.47% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>10/23</span>
+                <span class='fraction'>23/23</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">25% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/8</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">47.61% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/21</span>
+                <span class='fraction'>21/21</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -201,36 +201,36 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -287,37 +287,37 @@ export function useBackend(queryKey, axiosParameters, initialData) {
 // const wrappedParams = async (params) =&gt;
 //   await ( await axios(params)).data;
 &nbsp;
-const reportAxiosError = <span class="fstat-no" title="function not covered" >(e</span>rror) =&gt; {
-<span class="cstat-no" title="statement not covered" >  console.error("Axios Error:", error);</span>
-<span class="cstat-no" title="statement not covered" >  toast(`Axios Error: ${error}`);</span>
-<span class="cstat-no" title="statement not covered" >  return null;</span>
+const reportAxiosError = (error) =&gt; {
+  console.error("Axios Error:", error);
+  toast(`Axios Error: ${error}`);
+  return null;
 };
 &nbsp;
-const wrappedParams = <span class="fstat-no" title="function not covered" >as</span>ync (params) =&gt; {
-<span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >    return await (</span>
+const wrappedParams = async (params) =&gt; {
+  try {
+    return await (
       await axios(params)
     ).data;
   } catch (rejectedValue) {
-<span class="cstat-no" title="statement not covered" >    reportAxiosError(rejectedValue);</span>
-<span class="cstat-no" title="statement not covered" >    throw rejectedValue;</span>
+    reportAxiosError(rejectedValue);
+    throw rejectedValue;
   }
 };
 &nbsp;
-export function <span class="fstat-no" title="function not covered" >useBackendMutation(</span>
+export function useBackendMutation(
   objectToAxiosParams,
   useMutationParams,
-  queryKey = <span class="branch-0 cbranch-no" title="branch not covered" >null,</span>
+  queryKey = null,
 ) {
-  const queryClient = <span class="cstat-no" title="statement not covered" >useQueryClient();</span>
+  const queryClient = useQueryClient();
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return useMutation(<span class="fstat-no" title="function not covered" >(o</span>bject) =&gt; <span class="cstat-no" title="statement not covered" >wrappedParams(objectToAxiosParams(object)),</span> {</span>
-    onError: <span class="fstat-no" title="function not covered" >(d</span>ata) =&gt; {
-<span class="cstat-no" title="statement not covered" >      toast(`${data}`);</span>
+  return useMutation((object) =&gt; wrappedParams(objectToAxiosParams(object)), {
+    onError: (data) =&gt; {
+      toast(`${data}`);
     },
     // Stryker disable all: Not sure how to set up the complex behavior needed to test this
-    onSettled: <span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >      if (queryKey !== null) <span class="cstat-no" title="statement not covered" >queryClient.invalidateQueries(queryKey);</span></span>
+    onSettled: () =&gt; {
+      if (queryKey !== null) queryClient.invalidateQueries(queryKey);
     },
     // Stryker restore all
     retry: false,
@@ -331,7 +331,7 @@ export function <span class="fstat-no" title="function not covered" >useBackendM
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-11-21T04:53:55.162Z
+                at 2024-11-21T05:10:12.828Z
             </div>
         <script src="../prettify.js"></script>
         <script>
