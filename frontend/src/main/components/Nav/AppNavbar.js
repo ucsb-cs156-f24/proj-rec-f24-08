@@ -73,6 +73,19 @@ export default function AppNavbar({
               ) : (
                 <></>
               )}
+              {hasRole(currentUser, "ROLE_ADMIN") && (
+                <>
+                  <Nav.Link as={Link} to="/requests/pending">
+                    Pending Requests
+                  </Nav.Link>
+                  <Nav.Link as={Link} to="/requests/completed">
+                    Completed Requests
+                  </Nav.Link>
+                  <Nav.Link as={Link} to="/requests/statistics">
+                    Statistics
+                  </Nav.Link>
+                </>
+              )}
             </Nav>
 
             <Nav className="ml-auto">

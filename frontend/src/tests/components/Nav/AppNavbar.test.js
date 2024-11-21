@@ -227,4 +227,79 @@ describe("AppNavbar tests", () => {
       "/oauth2/authorization/google",
     );
   });
+
+  // Will need to update this test for professor users
+  test("renders the three prof pages correctly for admin users", async () => {
+    const currentUser = currentUserFixtures.adminUser;
+    const systemInfo = systemInfoFixtures.showingBoth;
+    const doLogin = jest.fn();
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <AppNavbar
+            currentUser={currentUser}
+            systemInfo={systemInfo}
+            doLogin={doLogin}
+          />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    await screen.findByText("Pending Requests");
+    const pendingLink = screen.getByText("Pending Requests");
+    expect(pendingLink).toBeInTheDocument();
+
+    await screen.findByText("Completed Requests");
+    const completedLink = screen.getByText("Completed Requests");
+    expect(completedLink).toBeInTheDocument();
+
+    await screen.findByText("Statistics");
+    const statisticsLink = screen.getByText("Statistics");
+    expect(statisticsLink).toBeInTheDocument();
+  });
+
+  test("the three prof pages do not show for normal users", async () => {
+    const currentUser = currentUserFixtures.userOnly;
+    const systemInfo = systemInfoFixtures.showingBoth;
+    const doLogin = jest.fn();
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <AppNavbar
+            currentUser={currentUser}
+            systemInfo={systemInfo}
+            doLogin={doLogin}
+          />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    expect(screen.queryByText("Pending Requests")).not.toBeInTheDocument();
+    expect(screen.queryByText("Completed Requests")).not.toBeInTheDocument();
+    expect(screen.queryByText("Statistics")).not.toBeInTheDocument();
+  });
+
+  test("the three prof pages do not show when not logged in", async () => {
+    const currentUser = null;
+    const systemInfo = systemInfoFixtures.showingBoth;
+    const doLogin = jest.fn();
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <AppNavbar
+            currentUser={currentUser}
+            systemInfo={systemInfo}
+            doLogin={doLogin}
+          />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    expect(screen.queryByText("Pending Requests")).not.toBeInTheDocument();
+    expect(screen.queryByText("Completed Requests")).not.toBeInTheDocument();
+    expect(screen.queryByText("Statistics")).not.toBeInTheDocument();
+  });
 });
