@@ -26,21 +26,21 @@ import org.springframework.web.bind.annotation.RestController;
     RecommendationRequestRepository recommendationRequestRepository;
 
     /**
-     * This method returns a list of all restaurants.
+     * This method returns a list of all recommendationrequests.
      * @return a list of all restaurants
      */
     @Operation(summary = &quot;List all recommendation request&quot;)
     @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
     @GetMapping(&quot;/all&quot;)
-    public Iterable&lt;RecommendationRequest&gt; allRestaurants() {
+    public Iterable&lt;RecommendationRequest&gt; allRecommendationRequests() {
 <span class="fc" id="L36">        Iterable&lt;RecommendationRequest&gt; restaurants = recommendationRequestRepository.findAll();</span>
 <span class="fc" id="L37">        return restaurants;</span>
     }
 
     /**
-     * This method returns a single restaurant.
-     * @param id id of the restaurant to get
-     * @return a single restaurant
+     * This method returns a single recommendationrequests.
+     * @param id id of the recommendationrequests to get
+     * @return a single recommendationrequests
      */
     @Operation(summary = &quot;Get a single recommendation request&quot;)
     @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
@@ -54,18 +54,18 @@ import org.springframework.web.bind.annotation.RestController;
     }
 
     /**
-     * This method creates a new restaurant. Accessible only to users with the role &quot;ROLE_ADMIN&quot;.
+     * This method creates a new recommendationrequests. Accessible only to users with the role &quot;ROLE_ADMIN&quot; until our roles can be configured.
      * @param professorName professor name of request
      * @param professorEmail professor email of request
      * @param recommendationTypes recommendation types of request
      * @param details details of request
      * @param submissionDate submission date of request
-     * @return the save restaurant (with it's id field set by the database)
+     * @return the save recommendationrequests (with it's id field set by the database)
      */
-    @Operation(summary = &quot;Create a new restaurant&quot;)
+    @Operation(summary = &quot;Create a new recommendationrequests&quot;)
     @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
     @PostMapping(&quot;/post&quot;)
-    public RecommendationRequest postRestaurant(
+    public RecommendationRequest postRecommendationRequests(
             @Parameter(name = &quot;professorName&quot;) @RequestParam String professorName,
             @Parameter(name = &quot;professorEmail&quot;) @RequestParam String professorEmail,
             @Parameter(name = &quot;recommendationTypes&quot;) @RequestParam String recommendationTypes,
