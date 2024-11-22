@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RecommendationRequestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-rec</a> &gt; <a href="index.source.html" class="el_package">edu.ucsb.cs156.rec.controllers</a> &gt; <span class="el_source">RecommendationRequestController.java</span></div><h1>RecommendationRequestController.java</h1><pre class="source lang-java linenums">package edu.ucsb.cs156.rec.controllers;
+
+import edu.ucsb.cs156.rec.entities.RecommendationRequest;
+import edu.ucsb.cs156.rec.errors.EntityNotFoundException;
+import edu.ucsb.cs156.rec.models.CurrentUser;
+import edu.ucsb.cs156.rec.repositories.RecommendationRequestRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+import java.time.LocalDateTime;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@Tag(name = &quot;RecommendationRequest&quot;)
+@RequestMapping(&quot;/api/recommendationrequest&quot;)
+@RestController
+<span class="fc" id="L24">public class RecommendationRequestController extends ApiController {</span>
+    @Autowired
+    RecommendationRequestRepository recommendationRequestRepository;
+
+    /**
+     * This method returns a list of all restaurants.
+     * @return a list of all restaurants
+     */
+    @Operation(summary = &quot;List all recommendation request&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
+    @GetMapping(&quot;/all&quot;)
+    public Iterable&lt;RecommendationRequest&gt; allRestaurants() {
+<span class="fc" id="L36">        Iterable&lt;RecommendationRequest&gt; restaurants = recommendationRequestRepository.findAll();</span>
+<span class="fc" id="L37">        return restaurants;</span>
+    }
+
+    /**
+     * This method returns a single restaurant.
+     * @param id id of the restaurant to get
+     * @return a single restaurant
+     */
+    @Operation(summary = &quot;Get a single recommendation request&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
+    @GetMapping(&quot;&quot;)
+    public RecommendationRequest getById(
+            @Parameter(name = &quot;id&quot;) @RequestParam Long id) {
+<span class="fc" id="L50">            RecommendationRequest recommendationRequest = recommendationRequestRepository.findById(id)</span>
+<span class="fc" id="L51">                .orElseThrow(() -&gt; new EntityNotFoundException(RecommendationRequest.class, id));</span>
+
+<span class="fc" id="L53">        return recommendationRequest;</span>
+    }
+
+    /**
+     * This method creates a new restaurant. Accessible only to users with the role &quot;ROLE_ADMIN&quot;.
+     * @param professorName professor name of request
+     * @param professorEmail professor email of request
+     * @param recommendationTypes recommendation types of request
+     * @param details details of request
+     * @param submissionDate submission date of request
+     * @return the save restaurant (with it's id field set by the database)
+     */
+    @Operation(summary = &quot;Create a new restaurant&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
+    @PostMapping(&quot;/post&quot;)
+    public RecommendationRequest postRestaurant(
+            @Parameter(name = &quot;professorName&quot;) @RequestParam String professorName,
+            @Parameter(name = &quot;professorEmail&quot;) @RequestParam String professorEmail,
+            @Parameter(name = &quot;recommendationTypes&quot;) @RequestParam String recommendationTypes,
+            @Parameter(name = &quot;details&quot;) @RequestParam String details,
+            @Parameter(name = &quot;submissionDate&quot;) @RequestParam LocalDateTime submissionDate)
+            {
+        //get current date right now and set status to pending
+<span class="fc" id="L76">        CurrentUser currentUser = getCurrentUser();</span>
+<span class="fc" id="L77">        RecommendationRequest recommendationRequest = new RecommendationRequest();</span>
+
+<span class="fc" id="L79">        recommendationRequest.setProfessorName(professorName);</span>
+<span class="fc" id="L80">        recommendationRequest.setProfessorEmail(professorEmail);</span>
+<span class="fc" id="L81">        recommendationRequest.setRequesterName(currentUser.getUser().getFullName());</span>
+<span class="fc" id="L82">        recommendationRequest.setUser(currentUser.getUser());</span>
+<span class="fc" id="L83">        recommendationRequest.setRecommendationTypes(recommendationTypes);</span>
+<span class="fc" id="L84">        recommendationRequest.setDetails(details);</span>
+<span class="fc" id="L85">        recommendationRequest.setStatus(&quot;PENDING&quot;);</span>
+        // ideally would like this to just directly call LocalDateTime.now() cannot properly mock test this behavior with full coverage
+<span class="fc" id="L87">        recommendationRequest.setSubmissionDate(submissionDate);</span>
+
+<span class="fc" id="L89">        RecommendationRequest savedRecommendationRequest = recommendationRequestRepository.save(recommendationRequest);</span>
+<span class="fc" id="L90">        return savedRecommendationRequest;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
