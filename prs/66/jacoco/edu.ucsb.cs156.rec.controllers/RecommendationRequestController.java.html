@@ -27,14 +27,14 @@ import org.springframework.web.bind.annotation.RestController;
 
     /**
      * This method returns a list of all recommendationrequests.
-     * @return a list of all restaurants
+     * @return a list of all recommendationrequests
      */
     @Operation(summary = &quot;List all recommendation request&quot;)
     @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
     @GetMapping(&quot;/all&quot;)
     public Iterable&lt;RecommendationRequest&gt; allRecommendationRequests() {
-<span class="fc" id="L36">        Iterable&lt;RecommendationRequest&gt; restaurants = recommendationRequestRepository.findAll();</span>
-<span class="fc" id="L37">        return restaurants;</span>
+<span class="fc" id="L36">        Iterable&lt;RecommendationRequest&gt; recommendationRequests = recommendationRequestRepository.findAll();</span>
+<span class="fc" id="L37">        return recommendationRequests;</span>
     }
 
     /**
