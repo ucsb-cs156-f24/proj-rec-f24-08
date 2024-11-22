@@ -133,16 +133,15 @@ import lombok.extern.slf4j.Slf4j;
 
 <span class="fc" id="L134">        recommendationRequest.setProfessorName(incoming.getProfessorName());</span>
 <span class="fc" id="L135">        recommendationRequest.setProfessorEmail(incoming.getProfessorEmail());</span>
-<span class="fc" id="L136">        recommendationRequest.setRequesterName(incoming.getRequesterName());</span>
-<span class="fc" id="L137">        recommendationRequest.setRecommendationTypes(incoming.getRecommendationTypes());</span>
-<span class="fc" id="L138">        recommendationRequest.setDetails(incoming.getDetails());</span>
-<span class="fc" id="L139">        recommendationRequest.setStatus(incoming.getStatus());</span>
-<span class="fc" id="L140">        recommendationRequest.setSubmissionDate(incoming.getSubmissionDate());</span>
-<span class="fc" id="L141">        recommendationRequest.setCompletionDate(incoming.getCompletionDate());</span>
+<span class="fc" id="L136">        recommendationRequest.setRecommendationTypes(incoming.getRecommendationTypes());</span>
+<span class="fc" id="L137">        recommendationRequest.setDetails(incoming.getDetails());</span>
+<span class="fc" id="L138">        recommendationRequest.setStatus(incoming.getStatus());</span>
+<span class="fc" id="L139">        recommendationRequest.setSubmissionDate(incoming.getSubmissionDate());</span>
+<span class="fc" id="L140">        recommendationRequest.setCompletionDate(incoming.getCompletionDate());</span>
 
-<span class="fc" id="L143">        recommendationRequestRepository.save(recommendationRequest);</span>
+<span class="fc" id="L142">        recommendationRequestRepository.save(recommendationRequest);</span>
            
-<span class="fc" id="L145">        return recommendationRequest;    </span>
+<span class="fc" id="L144">        return recommendationRequest;    </span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
