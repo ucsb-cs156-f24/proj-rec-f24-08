@@ -69,6 +69,9 @@ export default function AppNavbar({
               )}
               {hasRole(currentUser, "ROLE_ADMIN") && (
                 <>
+                  <Nav.Link as={Link} to="/requests">
+                    Recommendation Requests
+                  </Nav.Link>
                   <Nav.Link as={Link} to="/requests/pending">
                     Pending Requests
                   </Nav.Link>
