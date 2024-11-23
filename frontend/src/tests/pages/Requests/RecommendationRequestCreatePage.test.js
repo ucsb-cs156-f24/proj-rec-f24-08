@@ -63,7 +63,7 @@ describe("RequestCreatePage tests", () => {
     });
   });
 
-  test("on submit, makes request to backend, and redirects to /recommendationrequest/studentprofile with type=Other", async () => {
+  test("on submit, makes request to backend, and redirects to /requests/statistics with type=Other", async () => {
     const queryClient = new QueryClient();
     const request = {
       id: 1,
@@ -130,12 +130,12 @@ describe("RequestCreatePage tests", () => {
 
     // assert - check that the toast was called with the expected message
     expect(mockToast).toBeCalledWith(
-      "New Request Created - id: 1 requester name: testname1",
+      "New Request Created - id: 1 professor name: test",
     );
-    expect(mockNavigate).toBeCalledWith({ to: "/requests/studentprofile" });
+    expect(mockNavigate).toBeCalledWith({ to: "/requests/statistics" });
   });
 
-  test("on submit, makes request to backend, and redirects to /recommendationrequest/studentprofile without type=Other", async () => {
+  test("on submit, makes request to backend, and redirects to /requests/statistics without type=Other", async () => {
     const queryClient = new QueryClient();
     const request = {
       id: 1,
@@ -204,8 +204,8 @@ describe("RequestCreatePage tests", () => {
 
     // assert - check that the toast was called with the expected message
     expect(mockToast).toBeCalledWith(
-      "New Request Created - id: 1 requester name: testname1",
+      "New Request Created - id: 1 professor name: test",
     );
-    expect(mockNavigate).toBeCalledWith({ to: "/requests/studentprofile" });
+    expect(mockNavigate).toBeCalledWith({ to: "/requests/statistics" });
   });
 });
