@@ -203,9 +203,7 @@
 <a name='L138'></a><a href='#L138'>138</a>
 <a name='L139'></a><a href='#L139'>139</a>
 <a name='L140'></a><a href='#L140'>140</a>
-<a name='L141'></a><a href='#L141'>141</a>
-<a name='L142'></a><a href='#L142'>142</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L141'></a><a href='#L141'>141</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -347,145 +345,144 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Button, Form, Row, Col } from "react-bootstrap";
 &nbsp;
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 &nbsp;
-  import { useForm } from "react-hook-form";
-  import { useNavigate } from "react-router-dom";
+function RecommendationRequestForm({
+  initialContents,
+  submitAction,
+  buttonLabel = "Create",
+}) {
+  // Stryker disable all
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({ defaultValues: initialContents || {} });
+  // Stryker restore all
 &nbsp;
-  function RecommendationRequestForm({
-    initialContents,
-    submitAction,
-    buttonLabel = "Create",
-  }) {
-    // Stryker disable all
-    const {
-      register,
-      formState: { errors },
-      handleSubmit,
-    } = useForm({ defaultValues: initialContents || {} });
-    // Stryker restore all
+  const navigate = useNavigate();
 &nbsp;
-    const navigate = useNavigate();
+  // For explanation, see: https://stackoverflow.com/questions/3143070/javascript-regex-iso-datetime
+  // Note that even this complex regex may still need some tweaks
 &nbsp;
-    // For explanation, see: https://stackoverflow.com/questions/3143070/javascript-regex-iso-datetime
-    // Note that even this complex regex may still need some tweaks
+  // Stryker disable Regex
 &nbsp;
-    // Stryker disable Regex
-&nbsp;
-    return (
-      &lt;Form onSubmit={handleSubmit(submitAction)}&gt;
-        &lt;Row&gt;
-          {initialContents &amp;&amp; (
-            &lt;Col&gt;
-              &lt;Form.Group className="mb-3"&gt;
-                &lt;Form.Label htmlFor="id"&gt;Id&lt;/Form.Label&gt;
-                &lt;Form.Control
-                  data-testid="RecommendationRequestForm-id"
-                  id="id"
-                  type="text"
-                  {...register("id")}
-                  value={initialContents.id}
-                  disabled
-                /&gt;
-              &lt;/Form.Group&gt;
-            &lt;/Col&gt;
-          )}
-&nbsp;
+  return (
+    &lt;Form onSubmit={handleSubmit(submitAction)}&gt;
+      &lt;Row&gt;
+        {initialContents &amp;&amp; (
           &lt;Col&gt;
             &lt;Form.Group className="mb-3"&gt;
-              &lt;Form.Label htmlFor="professorName"&gt;Professor Name&lt;/Form.Label&gt;
+              &lt;Form.Label htmlFor="id"&gt;Id&lt;/Form.Label&gt;
               &lt;Form.Control
-                data-testid="RecommendationRequestForm-professorName"
-                id="professorName"
+                data-testid="RecommendationRequestForm-id"
+                id="id"
                 type="text"
-                isInvalid={Boolean(errors.professorName)}
-                {...register("professorName", {
-                  required: true,
-                })}
+                {...register("id")}
+                value={initialContents.id}
+                disabled
               /&gt;
-              &lt;Form.Control.Feedback type="invalid"&gt;
-                {errors.professorName &amp;&amp; "Professor Name is required. "}
-              &lt;/Form.Control.Feedback&gt;
             &lt;/Form.Group&gt;
           &lt;/Col&gt;
-          &lt;Col&gt;
-            &lt;Form.Group className="mb-3"&gt;
-              &lt;Form.Label htmlFor="professorEmail"&gt;Professor Email&lt;/Form.Label&gt;
-              &lt;Form.Control
-                data-testid="RecommendationRequestForm-professorEmail"
-                id="professorEmail"
-                type="email"
-                isInvalid={Boolean(errors.professorEmail)}
-                {...register("professorEmail", {
-                  required: true,
-                })}
-              /&gt;
-              &lt;Form.Control.Feedback type="invalid"&gt;
-                {errors.professorEmail &amp;&amp; "Professor Email is required. "}
-              &lt;/Form.Control.Feedback&gt;
-            &lt;/Form.Group&gt;
-          &lt;/Col&gt;
-        &lt;/Row&gt;
+        )}
 &nbsp;
-        &lt;Row&gt;
-          &lt;Col&gt;
-            &lt;Form.Group className="mb-3"&gt;
-              &lt;Form.Label htmlFor="recommendationTypes"&gt;
-                Recommendation Types
-              &lt;/Form.Label&gt;
-              &lt;Form.Select
-                data-testid="RecommendationRequestForm-recommendationTypes"
-                id="recommendationTypes"
-                type="string"
-                isInvalid={Boolean(errors.recommendationTypes)}
-                {...register("recommendationTypes", {})}
-              &gt;
-                &lt;option value="CS Department BS/MS program"&gt;
-                  CS Department BS/MS program
-                &lt;/option&gt;
-                &lt;option value="Scholarship or Fellowship"&gt;
-                  Scholarship or Fellowship
-                &lt;/option&gt;
-                &lt;option value="MS program (other than CS Dept BS/MS)"&gt;
-                  MS program (other than CS Dept BS/MS)
-                &lt;/option&gt;
-                &lt;option value="PhD program"&gt;PhD program&lt;/option&gt;
-                &lt;option value="Other"&gt;Other&lt;/option&gt;
-              &lt;/Form.Select&gt;
-            &lt;/Form.Group&gt;
-          &lt;/Col&gt;
-          &lt;Col&gt;
-            &lt;Form.Group className="mb-3"&gt;
-              &lt;Form.Label htmlFor="details"&gt;Details&lt;/Form.Label&gt;
-              &lt;Form.Control
-                data-testid="RecommendationRequestForm-details"
-                id="details"
-                type="text"
-                isInvalid={Boolean(errors.details)}
-                {...register("details")}
-              /&gt;
-            &lt;/Form.Group&gt;
-          &lt;/Col&gt;
-        &lt;/Row&gt;
+        &lt;Col&gt;
+          &lt;Form.Group className="mb-3"&gt;
+            &lt;Form.Label htmlFor="professorName"&gt;Professor Name&lt;/Form.Label&gt;
+            &lt;Form.Control
+              data-testid="RecommendationRequestForm-professorName"
+              id="professorName"
+              type="text"
+              isInvalid={Boolean(errors.professorName)}
+              {...register("professorName", {
+                required: true,
+              })}
+            /&gt;
+            &lt;Form.Control.Feedback type="invalid"&gt;
+              {errors.professorName &amp;&amp; "Professor Name is required. "}
+            &lt;/Form.Control.Feedback&gt;
+          &lt;/Form.Group&gt;
+        &lt;/Col&gt;
+        &lt;Col&gt;
+          &lt;Form.Group className="mb-3"&gt;
+            &lt;Form.Label htmlFor="professorEmail"&gt;Professor Email&lt;/Form.Label&gt;
+            &lt;Form.Control
+              data-testid="RecommendationRequestForm-professorEmail"
+              id="professorEmail"
+              type="email"
+              isInvalid={Boolean(errors.professorEmail)}
+              {...register("professorEmail", {
+                required: true,
+              })}
+            /&gt;
+            &lt;Form.Control.Feedback type="invalid"&gt;
+              {errors.professorEmail &amp;&amp; "Professor Email is required. "}
+            &lt;/Form.Control.Feedback&gt;
+          &lt;/Form.Group&gt;
+        &lt;/Col&gt;
+      &lt;/Row&gt;
 &nbsp;
-        &lt;Row&gt;
-          &lt;Col&gt;
-            &lt;Button type="submit" data-testid="RecommendationRequestForm-submit"&gt;
-              {buttonLabel}
-            &lt;/Button&gt;
-            &lt;Button
-              variant="Secondary"
-              onClick={() =&gt; navigate(-1)}
-              data-testid="RecommendationRequestForm-cancel"
+      &lt;Row&gt;
+        &lt;Col&gt;
+          &lt;Form.Group className="mb-3"&gt;
+            &lt;Form.Label htmlFor="recommendationTypes"&gt;
+              Recommendation Types
+            &lt;/Form.Label&gt;
+            &lt;Form.Select
+              data-testid="RecommendationRequestForm-recommendationTypes"
+              id="recommendationTypes"
+              type="string"
+              isInvalid={Boolean(errors.recommendationTypes)}
+              {...register("recommendationTypes", {})}
             &gt;
-              Cancel
-            &lt;/Button&gt;
-          &lt;/Col&gt;
-        &lt;/Row&gt;
-      &lt;/Form&gt;
-    );
-  }
+              &lt;option value="CS Department BS/MS program"&gt;
+                CS Department BS/MS program
+              &lt;/option&gt;
+              &lt;option value="Scholarship or Fellowship"&gt;
+                Scholarship or Fellowship
+              &lt;/option&gt;
+              &lt;option value="MS program (other than CS Dept BS/MS)"&gt;
+                MS program (other than CS Dept BS/MS)
+              &lt;/option&gt;
+              &lt;option value="PhD program"&gt;PhD program&lt;/option&gt;
+              &lt;option value="Other"&gt;Other&lt;/option&gt;
+            &lt;/Form.Select&gt;
+          &lt;/Form.Group&gt;
+        &lt;/Col&gt;
+        &lt;Col&gt;
+          &lt;Form.Group className="mb-3"&gt;
+            &lt;Form.Label htmlFor="details"&gt;Details&lt;/Form.Label&gt;
+            &lt;Form.Control
+              data-testid="RecommendationRequestForm-details"
+              id="details"
+              type="text"
+              isInvalid={Boolean(errors.details)}
+              {...register("details")}
+            /&gt;
+          &lt;/Form.Group&gt;
+        &lt;/Col&gt;
+      &lt;/Row&gt;
 &nbsp;
-  export default RecommendationRequestForm;
+      &lt;Row&gt;
+        &lt;Col&gt;
+          &lt;Button type="submit" data-testid="RecommendationRequestForm-submit"&gt;
+            {buttonLabel}
+          &lt;/Button&gt;
+          &lt;Button
+            variant="Secondary"
+            onClick={() =&gt; navigate(-1)}
+            data-testid="RecommendationRequestForm-cancel"
+          &gt;
+            Cancel
+          &lt;/Button&gt;
+        &lt;/Col&gt;
+      &lt;/Row&gt;
+    &lt;/Form&gt;
+  );
+}
+&nbsp;
+export default RecommendationRequestForm;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -493,7 +490,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-11-23T20:48:41.172Z
+                at 2024-11-23T20:50:26.895Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
