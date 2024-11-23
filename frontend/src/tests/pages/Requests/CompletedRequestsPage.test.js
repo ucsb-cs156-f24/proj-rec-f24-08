@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import StatisticsPage from "main/pages/RecommendationRequest/StatisticsPage";
+import CompletedRequestsPage from "main/pages/Requests/CompletedRequestsPage";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 
@@ -8,7 +8,7 @@ import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
 
-describe("StatisticsPage tests", () => {
+describe("CompletedRequestsPage tests", () => {
   const axiosMock = new AxiosMockAdapter(axios);
 
   const setupUserOnly = () => {
@@ -32,12 +32,12 @@ describe("StatisticsPage tests", () => {
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
-          <StatisticsPage />
+          <CompletedRequestsPage />
         </MemoryRouter>
       </QueryClientProvider>,
     );
 
     // assert
-    await screen.findByText("Statistics page not yet implemented");
+    await screen.findByText("Completed Requests page not yet implemented");
   });
 });

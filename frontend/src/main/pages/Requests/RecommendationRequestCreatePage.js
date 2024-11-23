@@ -12,7 +12,6 @@ export default function RecommendationRequestCreatePage({ storybook = false }) {
     params: {
       professorName: request.professorName,
       professorEmail: request.professorEmail,
-      requesterName: request.requesterName,
       submissionDate: new Date().toISOString(), // gets current date
       // completionDate: request.completionDate, // nothing yet because haven't completed? - are we allowed to not submit a value?
       status: "PENDING",
@@ -26,7 +25,7 @@ export default function RecommendationRequestCreatePage({ storybook = false }) {
 
   const onSuccess = (request) => {
     toast(
-      `New Request Created - id: ${request.id} requester name: ${request.requesterName}`,
+      `New Request Created - id: ${request.id} professor name: ${request.professorName}`,
     );
   };
 
@@ -44,7 +43,7 @@ export default function RecommendationRequestCreatePage({ storybook = false }) {
   };
 
   if (isSuccess && !storybook) {
-    return <Navigate to="/requests/studentprofile" />;
+    return <Navigate to="/requests/statistics" />;
   }
 
   return (

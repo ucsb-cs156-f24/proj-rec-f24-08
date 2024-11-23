@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import PendingRequestsPage from "main/pages/RecommendationRequest/PendingRequestsPage";
+import PendingRequestsPage from "main/pages/Requests/PendingRequestsPage";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 
