@@ -1,5 +1,7 @@
 package edu.ucsb.cs156.rec.entities;
 
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,5 +34,10 @@ public class User {
   private boolean emailVerified;
   private String locale;
   private String hostedDomain;
-  private boolean admin;
+  @Builder.Default
+  private boolean admin=false;
+  @Builder.Default
+  private boolean student=false;
+  @Builder.Default
+  private boolean professor=false;
 }

@@ -97,6 +97,18 @@
                     "name": "PICTURE_URL",
                     "type": "VARCHAR(255)"
                   }
+                },
+                {
+                  "column": {
+                    "name": "PROFESSOR",
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "STUDENT",
+                    "type": "BOOLEAN"
+                  }
                 }]
               ,
               "tableName": "USERS"
