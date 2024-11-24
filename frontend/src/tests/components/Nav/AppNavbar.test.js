@@ -140,7 +140,26 @@ describe("AppNavbar tests", () => {
     expect(screen.queryByTestId(/AppNavbarLocalhost/i)).toBeNull();
   });
 
-  test("renders the ucsbdates link correctly", async () => {
+  test("when oauthlogin undefined, default value is used", async () => {
+    const currentUser = currentUserFixtures.notLoggedIn;
+    const systemInfo = systemInfoFixtures.oauthLoginUndefined;
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <AppNavbar currentUser={currentUser} systemInfo={systemInfo} />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    await screen.findByText("Log In");
+    expect(screen.getByText("Log In")).toHaveAttribute(
+      "href",
+      "/oauth2/authorization/google",
+    );
+  });
+
+  test("renders the recommendationrequests link correctly", async () => {
     const currentUser = currentUserFixtures.userOnly;
     const systemInfo = systemInfoFixtures.showingBoth;
 
@@ -158,37 +177,14 @@ describe("AppNavbar tests", () => {
       </QueryClientProvider>,
     );
 
-    await screen.findByText("UCSB Dates");
-    const link = screen.getByText("UCSB Dates");
+    await screen.findByText("Recommendation Requests");
+    const link = screen.getByText("Recommendation Requests");
     expect(link).toBeInTheDocument();
-    expect(link.getAttribute("href")).toBe("/ucsbdates");
+    expect(link.getAttribute("href")).toBe("/requests");
   });
 
-  test("renders the restaurants link correctly", async () => {
-    const currentUser = currentUserFixtures.userOnly;
-    const systemInfo = systemInfoFixtures.showingBoth;
 
-    const doLogin = jest.fn();
-
-    render(
-      <QueryClientProvider client={queryClient}>
-        <MemoryRouter>
-          <AppNavbar
-            currentUser={currentUser}
-            systemInfo={systemInfo}
-            doLogin={doLogin}
-          />
-        </MemoryRouter>
-      </QueryClientProvider>,
-    );
-
-    await screen.findByText("Restaurants");
-    const link = screen.getByText("Restaurants");
-    expect(link).toBeInTheDocument();
-    expect(link.getAttribute("href")).toBe("/restaurants");
-  });
-
-  test("Restaurant and UCSBDates links do NOT show when not logged in", async () => {
+  test("recommendationrequests links does NOT show when not logged in", async () => {
     const currentUser = null;
     const systemInfo = systemInfoFixtures.showingBoth;
     const doLogin = jest.fn();
@@ -205,8 +201,7 @@ describe("AppNavbar tests", () => {
       </QueryClientProvider>,
     );
 
-    expect(screen.queryByText("Restaurants")).not.toBeInTheDocument();
-    expect(screen.queryByText("UCSBDates")).not.toBeInTheDocument();
+    expect(screen.queryByText("Recommendation Requests")).not.toBeInTheDocument();
   });
 
   test("when oauthlogin undefined, default value is used", async () => {
@@ -227,7 +222,6 @@ describe("AppNavbar tests", () => {
       "/oauth2/authorization/google",
     );
   });
-
   // Will need to update this test for professor users
   test("renders the three prof pages correctly for admin users", async () => {
     const currentUser = currentUserFixtures.adminUser;
