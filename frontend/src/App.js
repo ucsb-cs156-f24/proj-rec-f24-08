@@ -46,7 +46,6 @@ function App() {
             />
           </>
         )}
-        //add path to recommendation request
         {hasRole(currentUser, "ROLE_USER") && (
           <>
             <Route
