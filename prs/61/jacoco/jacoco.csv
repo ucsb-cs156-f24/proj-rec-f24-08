@@ -3,7 +3,6 @@ proj-rec,edu.ucsb.cs156.rec.controllers,UserInfoController,0,6,0,0,0,2,0,2,0,2
 proj-rec,edu.ucsb.cs156.rec.controllers,UsersController,0,16,0,0,0,4,0,2,0,2
 proj-rec,edu.ucsb.cs156.rec.controllers,ApiController,0,24,0,0,0,7,0,5,0,5
 proj-rec,edu.ucsb.cs156.rec.controllers,CSRFController,0,5,0,0,0,2,0,2,0,2
-proj-rec,edu.ucsb.cs156.rec.controllers,DummyController,0,16,0,2,0,4,0,3,0,2
 proj-rec,edu.ucsb.cs156.rec.controllers,SystemInfoController,0,7,0,0,0,2,0,2,0,2
 proj-rec,edu.ucsb.cs156.rec.services,CurrentUserService,0,10,0,2,0,2,0,3,0,2
 proj-rec,edu.ucsb.cs156.rec.services,SystemInfoService,0,3,0,0,0,1,0,1,0,1
