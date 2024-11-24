@@ -87,33 +87,43 @@ describe("utils/useBackend tests", () => {
 
       var axiosMock = new AxiosMockAdapter(axios);
 
-      axiosMock.onPost("/api/ucsbdates/post").reply(202, {
+      axiosMock.onPost("/api/recommendationrequest/post").reply(202, {
         id: 17,
-        quarterYYYYQ: "20221",
-        name: "Groundhog Day",
-        localDateTime: "2022-02-02T12:00",
+        professorName: "test",
+        professorEmail: "testemail@ucsb.edu",
+        requesterName: "testname1",
+        submissionDate: "2022-02-02T12:00",
+        completionDate: "2022-02-02T12:00",
+        status: "PENDING",
+        details: "test details",
+        recommendationTypes: "test",
       });
 
-      const objectToAxiosParams = (ucsbDate) => ({
-        url: "/api/ucsbdates/post",
+      const objectToAxiosParams = (request) => ({
+        url: "/api/recommendationrequest/post",
         method: "POST",
         params: {
-          quarterYYYYQ: ucsbDate.quarterYYYYQ,
-          name: ucsbDate.name,
-          localDateTime: ucsbDate.localDateTime,
+          professorName: request.professorName,
+          professorEmail: request.professorEmail,
+          requesterName: request.requesterName,
+          submissionDate: request.submissionDate,
+          completionDate: request.completionDate,
+          status: request.status,
+          details: request.details,
+          recommendationTypes: request.recommendationTypes,
         },
       });
 
-      const onSuccess = jest.fn().mockImplementation((ucsbDate) => {
+      const onSuccess = jest.fn().mockImplementation((request) => {
         mockToast(
-          `New ucsbDate Created - id: ${ucsbDate.id} name: ${ucsbDate.name}`,
+          `New recommendation Created - id: ${request.id} requester name: ${request.requesterName}`,
         );
       });
 
       const { result } = renderHook(
         () =>
           useBackendMutation(objectToAxiosParams, { onSuccess }, [
-            "/api/ucsbdates/all",
+            "/api/recommendationrequest/all",
           ]),
         { wrapper },
       );
@@ -121,15 +131,20 @@ describe("utils/useBackend tests", () => {
       const mutation = result.current;
       act(() =>
         mutation.mutate({
-          quarterYYYYQ: "20221",
-          name: "Groundhog Day",
-          localDateTime: "2022-02-02T12:00",
+          professorName: "test",
+          professorEmail: "testemail@ucsb.edu",
+          requesterName: "testname1",
+          submissionDate: "2022-02-02T12:00",
+          completionDate: "2022-02-02T12:00",
+          status: "PENDING",
+          details: "test details",
+          recommendationTypes: "test",
         }),
       );
 
       await waitFor(() => expect(onSuccess).toHaveBeenCalled());
       expect(mockToast).toHaveBeenCalledWith(
-        "New ucsbDate Created - id: 17 name: Groundhog Day",
+        "New recommendation Created - id: 17 requester name: testname1",
       );
     });
     test("useBackendMutation handles error correctly", async () => {
@@ -149,21 +164,26 @@ describe("utils/useBackend tests", () => {
       );
 
       const axiosMock = new AxiosMockAdapter(axios);
-      axiosMock.onPost("/api/ucsbdates/post").reply(404);
+      axiosMock.onPost("/api/recommendationrequest/post").reply(404);
 
-      const objectToAxiosParams = (ucsbDate) => ({
-        url: "/api/ucsbdates/post",
+      const objectToAxiosParams = (request) => ({
+        url: "/api/recommendationrequest/post",
         method: "POST",
         params: {
-          quarterYYYYQ: ucsbDate.quarterYYYYQ,
-          name: ucsbDate.name,
-          localDateTime: ucsbDate.localDateTime,
+          professorName: request.professorName,
+          professorEmail: request.professorEmail,
+          requesterName: request.requesterName,
+          submissionDate: request.submissionDate,
+          completionDate: request.completionDate,
+          status: request.status,
+          details: request.details,
+          recommendationTypes: request.recommendationTypes,
         },
       });
 
-      const onSuccess = jest.fn().mockImplementation((ucsbDate) => {
+      const onSuccess = jest.fn().mockImplementation((request) => {
         mockToast(
-          `New ucsbDate Created - id: ${ucsbDate.id} name: ${ucsbDate.name}`,
+          `New recommendation Created - id: ${request.id} requester name: ${request.requesterName}`,
         );
       });
 
@@ -176,9 +196,14 @@ describe("utils/useBackend tests", () => {
 
       mutation.mutate(
         {
-          quarterYYYYQ: "20221",
-          name: "Bastille Day",
-          localDateTime: "2022-06-14T12:00",
+          professorName: "test",
+          professorEmail: "testemail@ucsb.edu",
+          requesterName: "testname1",
+          submissionDate: "2022-02-02T12:00",
+          completionDate: "2022-02-02T12:00",
+          status: "PENDING",
+          details: "test details",
+          recommendationTypes: "test",
         },
         {
           onError: (e) =>
