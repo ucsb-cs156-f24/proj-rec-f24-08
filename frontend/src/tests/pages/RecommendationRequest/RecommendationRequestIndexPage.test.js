@@ -64,7 +64,9 @@ describe("RecommendationRequestIndexPage tests", () => {
 
     // assert
     await waitFor(() => {
-      expect(screen.getByText(/Create Recommendation Request/)).toBeInTheDocument();
+      expect(
+        screen.getByText(/Create Recommendation Request/),
+      ).toBeInTheDocument();
     });
     const button = screen.getByText(/Create Recommendation Request/);
     expect(button).toHaveAttribute("href", "/requests/create");
@@ -102,7 +104,9 @@ describe("RecommendationRequestIndexPage tests", () => {
     );
 
     // assert that the Create button is not present when user isn't an admin
-    expect(screen.queryByText(/Create Recommendation Request/)).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(/Create Recommendation Request/),
+    ).not.toBeInTheDocument();
   });
 
   test("renders empty table when backend unavailable, user only", async () => {
@@ -178,7 +182,9 @@ describe("RecommendationRequestIndexPage tests", () => {
 
     // assert
     await waitFor(() => {
-      expect(mockToast).toBeCalledWith("Recommendation Request with id 2 was deleted");
+      expect(mockToast).toBeCalledWith(
+        "Recommendation Request with id 2 was deleted",
+      );
     });
   });
 });

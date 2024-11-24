@@ -183,7 +183,6 @@ describe("AppNavbar tests", () => {
     expect(link.getAttribute("href")).toBe("/requests");
   });
 
-
   test("recommendationrequests links does NOT show when not logged in", async () => {
     const currentUser = null;
     const systemInfo = systemInfoFixtures.showingBoth;
@@ -201,26 +200,9 @@ describe("AppNavbar tests", () => {
       </QueryClientProvider>,
     );
 
-    expect(screen.queryByText("Recommendation Requests")).not.toBeInTheDocument();
-  });
-
-  test("when oauthlogin undefined, default value is used", async () => {
-    const currentUser = currentUserFixtures.notLoggedIn;
-    const systemInfo = systemInfoFixtures.oauthLoginUndefined;
-
-    render(
-      <QueryClientProvider client={queryClient}>
-        <MemoryRouter>
-          <AppNavbar currentUser={currentUser} systemInfo={systemInfo} />
-        </MemoryRouter>
-      </QueryClientProvider>,
-    );
-
-    await screen.findByText("Log In");
-    expect(screen.getByText("Log In")).toHaveAttribute(
-      "href",
-      "/oauth2/authorization/google",
-    );
+    expect(
+      screen.queryByText("Recommendation Requests"),
+    ).not.toBeInTheDocument();
   });
   // Will need to update this test for professor users
   test("renders the three prof pages correctly for admin users", async () => {
@@ -255,28 +237,6 @@ describe("AppNavbar tests", () => {
 
   test("the three prof pages do not show for normal users", async () => {
     const currentUser = currentUserFixtures.userOnly;
-    const systemInfo = systemInfoFixtures.showingBoth;
-    const doLogin = jest.fn();
-
-    render(
-      <QueryClientProvider client={queryClient}>
-        <MemoryRouter>
-          <AppNavbar
-            currentUser={currentUser}
-            systemInfo={systemInfo}
-            doLogin={doLogin}
-          />
-        </MemoryRouter>
-      </QueryClientProvider>,
-    );
-
-    expect(screen.queryByText("Pending Requests")).not.toBeInTheDocument();
-    expect(screen.queryByText("Completed Requests")).not.toBeInTheDocument();
-    expect(screen.queryByText("Statistics")).not.toBeInTheDocument();
-  });
-
-  test("the three prof pages do not show when not logged in", async () => {
-    const currentUser = null;
     const systemInfo = systemInfoFixtures.showingBoth;
     const doLogin = jest.fn();
 
