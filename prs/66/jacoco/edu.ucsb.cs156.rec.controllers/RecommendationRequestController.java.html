@@ -70,11 +70,13 @@ import org.springframework.web.bind.annotation.RestController;
     @GetMapping(&quot;&quot;)
     public RecommendationRequest getById(
             @Parameter(name = &quot;id&quot;) @RequestParam Long id) {
-<span class="fc" id="L73">            User currentUser = getCurrentUser().getUser();</span>
-<span class="fc" id="L74">            RecommendationRequest recommendationRequest = recommendationRequestRepository.findByIdAndProfessorOrRequester(id, currentUser, currentUser)</span>
+<span class="fc" id="L73">            Long currentUserId = getCurrentUser().getUser().getId();</span>
+<span class="fc" id="L74">            RecommendationRequest recommendationRequest = recommendationRequestRepository.findById(id)</span>
 <span class="fc" id="L75">                .orElseThrow(() -&gt; new EntityNotFoundException(RecommendationRequest.class, id));</span>
-
-<span class="fc" id="L77">        return recommendationRequest;</span>
+<span class="fc bfc" id="L76" title="All 4 branches covered.">            if (recommendationRequest.getRequester().getId() != currentUserId &amp;&amp; recommendationRequest.getProfessor().getId() != currentUserId) {</span>
+<span class="fc" id="L77">                throw new EntityNotFoundException(RecommendationRequest.class, id);</span>
+            }
+<span class="fc" id="L79">        return recommendationRequest;</span>
     }
 
     /**
@@ -95,18 +97,20 @@ import org.springframework.web.bind.annotation.RestController;
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dueDate)
             {
         //get current date right now and set status to pending
-<span class="fc" id="L98">        CurrentUser currentUser = getCurrentUser();</span>
-<span class="fc" id="L99">        RecommendationRequest recommendationRequest = new RecommendationRequest();</span>
-<span class="fc" id="L100">        User professor = userRepository.findById(professorId).orElseThrow(() -&gt; new EntityNotFoundException(User.class, professorId));</span>
-<span class="fc" id="L101">        recommendationRequest.setProfessor(professor);</span>
-<span class="fc" id="L102">        recommendationRequest.setRequester(currentUser.getUser());</span>
-<span class="fc" id="L103">        recommendationRequest.setRecommendationType(recommendationType);</span>
-<span class="fc" id="L104">        recommendationRequest.setDetails(details);</span>
-<span class="fc" id="L105">        recommendationRequest.setStatus(&quot;PENDING&quot;);</span>
-<span class="fc" id="L106">        recommendationRequest.setDueDate(dueDate);</span>
+<span class="fc" id="L100">        CurrentUser currentUser = getCurrentUser();</span>
+<span class="fc" id="L101">        RecommendationRequest recommendationRequest = new RecommendationRequest();</span>
+<span class="fc" id="L102">        User professor = userRepository.findById(professorId).orElseThrow(() -&gt; new EntityNotFoundException(User.class, professorId));</span>
+<span class="fc" id="L103">        recommendationRequest.setProfessor(professor);</span>
+        // recommendationRequest.setProfessor_id(professorId);
+<span class="fc" id="L105">        recommendationRequest.setRequester(currentUser.getUser());</span>
+        // recommendationRequest.setRequester_id(currentUser.getUser().getId());
+<span class="fc" id="L107">        recommendationRequest.setRecommendationType(recommendationType);</span>
+<span class="fc" id="L108">        recommendationRequest.setDetails(details);</span>
+<span class="fc" id="L109">        recommendationRequest.setStatus(&quot;PENDING&quot;);</span>
+<span class="fc" id="L110">        recommendationRequest.setDueDate(dueDate);</span>
 
-<span class="fc" id="L108">        RecommendationRequest savedRecommendationRequest = recommendationRequestRepository.save(recommendationRequest);</span>
-<span class="fc" id="L109">        return savedRecommendationRequest;</span>
+<span class="fc" id="L112">        RecommendationRequest savedRecommendationRequest = recommendationRequestRepository.save(recommendationRequest);</span>
+<span class="fc" id="L113">        return savedRecommendationRequest;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
