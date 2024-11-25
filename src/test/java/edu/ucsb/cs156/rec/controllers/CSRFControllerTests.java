@@ -43,5 +43,5 @@ public class CSRFControllerTests extends ControllerTestCase {
     assertTrue(responseString.contains("X-XSRF-TOKEN"));
 
   }
-
+  
 }
