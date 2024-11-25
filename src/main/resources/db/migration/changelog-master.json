@@ -1,4 +1,4 @@
 { "databaseChangeLog": [
     {"include": {"file": "db/migration/changes/Users.json"}},
-    {"include": {"file": "db/migration/changes/RecommendationRequest.json"}},
+    {"include": {"file": "db/migration/changes/RecommendationRequest.json"}}
 ]}
