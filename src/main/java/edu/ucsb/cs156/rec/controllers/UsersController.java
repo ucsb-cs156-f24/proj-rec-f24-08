@@ -7,13 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.ucsb.cs156.rec.entities.User;
 import edu.ucsb.cs156.rec.repositories.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import org.springframework.web.bind.annotation.RequestParam;
+
+import edu.ucsb.cs156.rec.errors.EntityNotFoundException;
 
 /**
  * This is a REST controller for getting information about the users.
@@ -44,5 +52,62 @@ public class UsersController extends ApiController {
         Iterable<User> users = userRepository.findAll();
         String body = mapper.writeValueAsString(users);
         return ResponseEntity.ok().body(body);
+    }
+
+    @Operation(summary= "Get user by id")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/get")
+    public User users(
+        @Parameter(name="id", description="Long, id number of user to get", example="1", required=true) @RequestParam Long id)
+            throws JsonProcessingException {
+        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(User.class, id));
+        
+        return user;
+    }
+
+    @Operation(summary= "Delete a user (admin)")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/delete")
+    public Object deleteUser_Admin(
+        @Parameter(name="id", description="Long, id number of user to delete", example="1", required=true) @RequestParam Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(User.class, id));
+        userRepository.delete(user);
+        return genericMessage("User with id %s has been deleted.".formatted(id));
+    }
+
+    @Operation(summary = "Toggle the admin field")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/toggleAdmin")
+    public Object toggleAdmin( @Parameter(name = "id", description = "Long, id number of user to toggle their admin field", example = "1", required = true) @RequestParam Long id){
+        User user = userRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException(User.class, id));
+
+        user.setAdmin(!user.getAdmin());
+        userRepository.save(user);
+        return genericMessage("User with id %s has toggled admin status to %s".formatted(id, user.getAdmin()));
+    }
+
+    @Operation(summary = "Toggle the professor field")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/toggleProfessor")
+    public Object toggleProfessor( @Parameter(name = "id", description = "Long, id number of user to toggle their professor field", example = "1", required = true) @RequestParam Long id){
+        User user = userRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException(User.class, id));
+
+        user.setProfessor(!user.getProfessor());
+        userRepository.save(user);
+        return genericMessage("User with id %s has toggled professor status to %s".formatted(id, user.getProfessor()));
+    }
+
+    @Operation(summary = "Toggle the student field")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/toggleStudent")
+    public Object toggleStudent( @Parameter(name = "id", description = "Long, id number of user to toggle their student field", example = "1", required = true) @RequestParam Long id){
+        User user = userRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException(User.class, id));
+
+        user.setStudent(!user.getStudent());
+        userRepository.save(user);
+        return genericMessage("User with id %s has toggled student status to %s".formatted(id, user.getStudent()));
     }
 }
