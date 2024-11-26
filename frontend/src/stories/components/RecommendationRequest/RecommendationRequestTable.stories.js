@@ -1,6 +1,6 @@
 import React from "react";
 import RecommendationRequestTable from "main/components/RecommendationRequest/RecommendationRequestTable";
-import { recommendationRequestFixtures } from "fixtures/RecommendationRequestFixtures";
+import { recommendationRequestFixtures } from "fixtures/recommendationRequestFixtures";
 import { currentUserFixtures } from "fixtures/currentUserFixtures";
 import { http, HttpResponse } from "msw";
 

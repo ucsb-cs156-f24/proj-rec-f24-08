@@ -5,7 +5,7 @@ import RecommendationRequestIndexPage from "main/pages/RecommendationRequest/Rec
 
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
-import { recommendationRequestFixtures } from "fixtures/RecommendationRequestFixtures";
+import { recommendationRequestFixtures } from "fixtures/recommendationRequestFixtures";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
 import mockConsole from "jest-mock-console";
@@ -47,6 +47,17 @@ describe("RecommendationRequestIndexPage tests", () => {
       .reply(200, systemInfoFixtures.showingNeither);
   };
 
+  const loggedOutUser = () => {
+    axiosMock.reset();
+    axiosMock.resetHistory();
+    axiosMock
+      .onGet("/api/currentUser")
+      .reply(200, apiCurrentUserFixtures.missingRolesToTestErrorHandling);
+    axiosMock
+      .onGet("/api/systemInfo")
+      .reply(401);
+  };
+
   test("Renders with Create Button for admin user", async () => {
     // arrange
     setupAdminUser();
@@ -71,6 +82,29 @@ describe("RecommendationRequestIndexPage tests", () => {
     const button = screen.getByText(/Create Recommendation Request/);
     expect(button).toHaveAttribute("href", "/requests/create");
     expect(button).toHaveAttribute("style", "float: right;");
+  });
+
+  test("Renders with no Create Button for user not logged in", async () => {
+    // arrange
+    loggedOutUser(); 
+    const queryClient = new QueryClient();
+    axiosMock.onGet("/api/recommendationrequest/all").reply(200, []);
+
+    // act
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <RecommendationRequestIndexPage />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    // assert
+    await waitFor(() => {
+      expect(
+        screen.queryByText(/Create Recommendation Request/),
+      ).not.toBeInTheDocument();
+    });
   });
 
   test("renders three recommendation requests correctly for regular user", async () => {
@@ -103,10 +137,10 @@ describe("RecommendationRequestIndexPage tests", () => {
       "4",
     );
 
-    // assert that the Create button is not present when user isn't an admin
+    // assert that the Create button is present when user has role user
     expect(
-      screen.queryByText(/Create Recommendation Request/),
-    ).not.toBeInTheDocument();
+      screen.getByText(/Create Recommendation Request/),
+    ).toBeInTheDocument();
   });
 
   test("renders empty table when backend unavailable, user only", async () => {
