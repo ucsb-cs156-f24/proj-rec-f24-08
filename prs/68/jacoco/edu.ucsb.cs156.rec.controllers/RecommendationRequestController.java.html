@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RecommendationRequestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-rec</a> &gt; <a href="index.source.html" class="el_package">edu.ucsb.cs156.rec.controllers</a> &gt; <span class="el_source">RecommendationRequestController.java</span></div><h1>RecommendationRequestController.java</h1><pre class="source lang-java linenums">package edu.ucsb.cs156.rec.controllers;
-import edu.ucsb.cs156.rec.entities.User;
 
 import java.time.LocalDateTime;
 
@@ -18,24 +17,28 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import edu.ucsb.cs156.rec.entities.RecommendationRequest;
+import edu.ucsb.cs156.rec.entities.User;
 import edu.ucsb.cs156.rec.errors.EntityNotFoundException;
+import edu.ucsb.cs156.rec.models.CurrentUser;
 import edu.ucsb.cs156.rec.repositories.RecommendationRequestRepository;
+import edu.ucsb.cs156.rec.repositories.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
-@Tag(name = &quot;RecommendationRequests&quot;)
+@Tag(name = &quot;RecommendationRequest&quot;)
 @RequestMapping(&quot;/api/recommendationrequest&quot;)
 @RestController
-<span class="fc" id="L32">@Slf4j</span>
-<span class="fc" id="L33">public class RecommendationRequestController extends ApiController {</span>
+<span class="fc" id="L34">@Slf4j</span>
+<span class="fc" id="L35">public class RecommendationRequestController extends ApiController {</span>
 
     @Autowired
     RecommendationRequestRepository recommendationRequestRepository;
 
-
+    @Autowired
+    UserRepository userRepository;
 
     /**
      * Any admin can delete a RecommendationRequest
@@ -47,14 +50,14 @@ import lombok.extern.slf4j.Slf4j;
     @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
     @DeleteMapping(&quot;/admin&quot;)
     public Object deleteRecommendationRequestAsAdmin(@Parameter(name = &quot;id&quot;) @RequestParam Long id) {
-<span class="fc" id="L50">        RecommendationRequest recommendationRequest = </span>
+<span class="fc" id="L53">        RecommendationRequest recommendationRequest = </span>
         recommendationRequestRepository
-<span class="fc" id="L52">            .findById(id)</span>
-<span class="fc" id="L53">            .orElseThrow(() -&gt; new EntityNotFoundException(RecommendationRequest.class, id));</span>
+<span class="fc" id="L55">            .findById(id)</span>
+<span class="fc" id="L56">            .orElseThrow(() -&gt; new EntityNotFoundException(RecommendationRequest.class, id));</span>
 
-<span class="fc" id="L55">        recommendationRequestRepository.delete(recommendationRequest);</span>
+<span class="fc" id="L58">        recommendationRequestRepository.delete(recommendationRequest);</span>
 
-<span class="fc" id="L57">        return genericMessage(&quot;RecommendationRequest with id %s deleted&quot;.formatted(id));</span>
+<span class="fc" id="L60">        return genericMessage(&quot;RecommendationRequest with id %s deleted&quot;.formatted(id));</span>
     }
 
     /**
@@ -67,48 +70,15 @@ import lombok.extern.slf4j.Slf4j;
     @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
     @DeleteMapping(&quot;&quot;)
     public Object deleteRecommendationRequestAsUser(@Parameter(name = &quot;id&quot;) @RequestParam Long id) {
-<span class="fc" id="L70">        User currentUser = getCurrentUser().getUser(); </span>
-<span class="fc" id="L71">        RecommendationRequest recommendationRequest = </span>
+<span class="fc" id="L73">        User currentUser = getCurrentUser().getUser(); </span>
+<span class="fc" id="L74">        RecommendationRequest recommendationRequest = </span>
         recommendationRequestRepository
-<span class="fc" id="L73">            .findByIdAndUser(id, currentUser)</span>
-<span class="fc" id="L74">            .orElseThrow(() -&gt; new EntityNotFoundException(RecommendationRequest.class, id));</span>
+<span class="fc" id="L76">            .findByIdAndRequester(id, currentUser)</span>
+<span class="fc" id="L77">            .orElseThrow(() -&gt; new EntityNotFoundException(RecommendationRequest.class, id));</span>
 
-<span class="fc" id="L76">        recommendationRequestRepository.delete(recommendationRequest);</span>
+<span class="fc" id="L79">        recommendationRequestRepository.delete(recommendationRequest);</span>
 
-<span class="fc" id="L78">        return genericMessage(&quot;RecommendationRequest with id %s deleted&quot;.formatted(id));</span>
-    }
-
-    /**
-     * Any admin can update a single Recommendation Request
-     * 
-     * @param id       the id of the Recommendation Request to update
-     * @param incoming the updated Recommendation Request
-     * @return the updated Recommendation Request object
-     */
-    @Operation(summary = &quot;An admin can update a single recommendation request&quot;)
-    @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
-    @PutMapping(&quot;/admin&quot;)
-    public RecommendationRequest updateRecommendationRequestAsAdmin(
-        @Parameter(name = &quot;id&quot;) @RequestParam Long id,
-        @RequestBody @Valid RecommendationRequest incoming) {
-
-<span class="fc" id="L95">        RecommendationRequest recommendationRequest = </span>
-            recommendationRequestRepository
-<span class="fc" id="L97">                .findById(id)</span>
-<span class="fc" id="L98">                .orElseThrow(() -&gt; new EntityNotFoundException(RecommendationRequest.class, id));</span>
-
-<span class="fc" id="L100">        recommendationRequest.setProfessorName(incoming.getProfessorName());</span>
-<span class="fc" id="L101">        recommendationRequest.setProfessorEmail(incoming.getProfessorEmail());</span>
-<span class="fc" id="L102">        recommendationRequest.setRequesterName(incoming.getRequesterName());</span>
-<span class="fc" id="L103">        recommendationRequest.setRecommendationTypes(incoming.getRecommendationTypes());</span>
-<span class="fc" id="L104">        recommendationRequest.setDetails(incoming.getDetails());</span>
-<span class="fc" id="L105">        recommendationRequest.setStatus(incoming.getStatus());</span>
-<span class="fc" id="L106">        recommendationRequest.setSubmissionDate(incoming.getSubmissionDate());</span>
-<span class="fc" id="L107">        recommendationRequest.setCompletionDate(incoming.getCompletionDate());</span>
-
-<span class="fc" id="L109">        recommendationRequestRepository.save(recommendationRequest);</span>
-
-<span class="fc" id="L111">        return recommendationRequest;</span>
+<span class="fc" id="L81">        return genericMessage(&quot;RecommendationRequest with id %s deleted&quot;.formatted(id));</span>
     }
 
     /**
@@ -125,23 +95,44 @@ import lombok.extern.slf4j.Slf4j;
         @Parameter(name = &quot;id&quot;) @RequestParam Long id,
         @RequestBody @Valid RecommendationRequest incoming) {
 
-<span class="fc" id="L128">        User currentUser = getCurrentUser().getUser(); </span>
-<span class="fc" id="L129">        RecommendationRequest recommendationRequest = </span>
+<span class="fc" id="L98">        User currentUser = getCurrentUser().getUser(); </span>
+<span class="fc" id="L99">        RecommendationRequest recommendationRequest = </span>
             recommendationRequestRepository
-<span class="fc" id="L131">                .findByIdAndUser(id, currentUser)</span>
-<span class="fc" id="L132">                .orElseThrow(() -&gt; new EntityNotFoundException(RecommendationRequest.class, id));</span>
+<span class="fc" id="L101">                .findByIdAndRequester(id, currentUser)</span>
+<span class="fc" id="L102">                .orElseThrow(() -&gt; new EntityNotFoundException(RecommendationRequest.class, id));</span>
 
-<span class="fc" id="L134">        recommendationRequest.setProfessorName(incoming.getProfessorName());</span>
-<span class="fc" id="L135">        recommendationRequest.setProfessorEmail(incoming.getProfessorEmail());</span>
-<span class="fc" id="L136">        recommendationRequest.setRecommendationTypes(incoming.getRecommendationTypes());</span>
-<span class="fc" id="L137">        recommendationRequest.setDetails(incoming.getDetails());</span>
-<span class="fc" id="L138">        recommendationRequest.setStatus(incoming.getStatus());</span>
-<span class="fc" id="L139">        recommendationRequest.setSubmissionDate(incoming.getSubmissionDate());</span>
-<span class="fc" id="L140">        recommendationRequest.setCompletionDate(incoming.getCompletionDate());</span>
+<span class="fc" id="L104">        recommendationRequest.setDetails(incoming.getDetails());</span>
 
-<span class="fc" id="L142">        recommendationRequestRepository.save(recommendationRequest);</span>
+<span class="fc" id="L106">        recommendationRequestRepository.save(recommendationRequest);</span>
            
-<span class="fc" id="L144">        return recommendationRequest;    </span>
+<span class="fc" id="L108">        return recommendationRequest;    </span>
     }
+
+     /**
+     * Prof can update a Recommendation Request's status
+     * 
+     * @param id       the id of the Recommendation Request to update
+     * @param incoming the updated Recommendation Request
+     * @return the updated Recommendation Request object
+     */
+    @Operation(summary = &quot;A Professor can update a recommendation request's status&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_PROFESSOR')&quot;)
+    @PutMapping(&quot;/professor&quot;)
+    public RecommendationRequest updateRecommendationRequestAsAdmin(
+        @Parameter(name = &quot;id&quot;) @RequestParam Long id,
+        @RequestBody @Valid RecommendationRequest incoming) {
+
+<span class="fc" id="L125">        RecommendationRequest recommendationRequest = </span>
+            recommendationRequestRepository
+<span class="fc" id="L127">                .findById(id)</span>
+<span class="fc" id="L128">                .orElseThrow(() -&gt; new EntityNotFoundException(RecommendationRequest.class, id));</span>
+
+<span class="fc" id="L130">        recommendationRequest.setStatus(incoming.getStatus());</span>
+
+<span class="fc" id="L132">        recommendationRequestRepository.save(recommendationRequest);</span>
+
+<span class="fc" id="L134">        return recommendationRequest;</span>
+    }
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
