@@ -22,8 +22,7 @@ describe("RecommendationRequestUtils", () => {
 
       // act
       onDeleteSuccess("abc");
-
-      // assert
+      // asserts
       expect(mockToast).toHaveBeenCalledWith("abc");
       expect(console.log).toHaveBeenCalled();
       const message = console.log.mock.calls[0][0];
