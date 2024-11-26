@@ -58,6 +58,15 @@ export default function AppNavbar({
                   <NavDropdown.Item href="/admin/users">Users</NavDropdown.Item>
                 </NavDropdown>
               )}
+              {currentUser && currentUser.loggedIn ? (
+                <>
+                  <Nav.Link as={Link} to="/requests">
+                    Recommendation Requests
+                  </Nav.Link>
+                </>
+              ) : (
+                <></>
+              )}
               {hasRole(currentUser, "ROLE_ADMIN") && (
                 <>
                   <Nav.Link as={Link} to="/requests/pending">

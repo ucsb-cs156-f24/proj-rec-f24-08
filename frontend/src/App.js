@@ -3,6 +3,10 @@ import HomePage from "main/pages/HomePage";
 import ProfilePage from "main/pages/ProfilePage";
 import AdminUsersPage from "main/pages/AdminUsersPage";
 
+import RecommendationRequestIndexPage from "main/pages/RecommendationRequest/RecommendationRequestIndexPage";
+import RecommendationRequestEditPage from "main/pages/RecommendationRequest/RecommendationRequestEditPage";
+import RecommendationRequestCreatePage from "main/pages/RecommendationRequest/RecommendationRequestCreatePage";
+
 import PendingRequestsPage from "main/pages/Requests/PendingRequestsPage";
 import CompletedRequestsPage from "main/pages/Requests/CompletedRequestsPage";
 import StatisticsPage from "main/pages/Requests/StatisticsPage";
@@ -39,6 +43,29 @@ function App() {
               exact
               path="/requests/statistics"
               element={<StatisticsPage />}
+            />
+          </>
+        )}
+        {hasRole(currentUser, "ROLE_USER") && (
+          <>
+            <Route
+              exact
+              path="/requests"
+              element={<RecommendationRequestIndexPage />}
+            />
+          </>
+        )}
+        {hasRole(currentUser, "ROLE_ADMIN") && (
+          <>
+            <Route
+              exact
+              path="/requests/edit/:id"
+              element={<RecommendationRequestEditPage />}
+            />
+            <Route
+              exact
+              path="/requests/create"
+              element={<RecommendationRequestCreatePage />}
             />
           </>
         )}
