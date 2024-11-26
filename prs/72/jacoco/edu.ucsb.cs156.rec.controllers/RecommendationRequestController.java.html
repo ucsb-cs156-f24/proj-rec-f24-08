@@ -101,16 +101,14 @@ import org.springframework.web.bind.annotation.RestController;
 <span class="fc" id="L101">        RecommendationRequest recommendationRequest = new RecommendationRequest();</span>
 <span class="fc" id="L102">        User professor = userRepository.findById(professorId).orElseThrow(() -&gt; new EntityNotFoundException(User.class, professorId));</span>
 <span class="fc" id="L103">        recommendationRequest.setProfessor(professor);</span>
-        // recommendationRequest.setProfessor_id(professorId);
-<span class="fc" id="L105">        recommendationRequest.setRequester(currentUser.getUser());</span>
-        // recommendationRequest.setRequester_id(currentUser.getUser().getId());
-<span class="fc" id="L107">        recommendationRequest.setRecommendationType(recommendationType);</span>
-<span class="fc" id="L108">        recommendationRequest.setDetails(details);</span>
-<span class="fc" id="L109">        recommendationRequest.setStatus(&quot;PENDING&quot;);</span>
-<span class="fc" id="L110">        recommendationRequest.setDueDate(dueDate);</span>
+<span class="fc" id="L104">        recommendationRequest.setRequester(currentUser.getUser());</span>
+<span class="fc" id="L105">        recommendationRequest.setRecommendationType(recommendationType);</span>
+<span class="fc" id="L106">        recommendationRequest.setDetails(details);</span>
+<span class="fc" id="L107">        recommendationRequest.setStatus(&quot;PENDING&quot;);</span>
+<span class="fc" id="L108">        recommendationRequest.setDueDate(dueDate);</span>
 
-<span class="fc" id="L112">        RecommendationRequest savedRecommendationRequest = recommendationRequestRepository.save(recommendationRequest);</span>
-<span class="fc" id="L113">        return savedRecommendationRequest;</span>
+<span class="fc" id="L110">        RecommendationRequest savedRecommendationRequest = recommendationRequestRepository.save(recommendationRequest);</span>
+<span class="fc" id="L111">        return savedRecommendationRequest;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
