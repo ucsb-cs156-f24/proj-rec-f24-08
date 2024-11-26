@@ -1,11 +1,12 @@
 import { fireEvent, render, waitFor, screen } from "@testing-library/react";
-import { recommendationRequestFixtures } from "fixtures/RecommendationRequestFixtures";
+import { recommendationRequestFixtures } from "fixtures/recommendationRequestFixtures";
 import RecommendationRequestTable from "main/components/RecommendationRequest/RecommendationRequestTable";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 import { currentUserFixtures } from "fixtures/currentUserFixtures";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
+import { hasRole } from "main/utils/currentUser";
 
 const mockedNavigate = jest.fn();
 
@@ -19,6 +20,9 @@ describe("UserTable tests", () => {
 
   test("Has the expected column headers and content for ordinary user", () => {
     const currentUser = currentUserFixtures.userOnly;
+
+    expect(hasRole(currentUser, "ROLE_USER")).toBe(true);
+    expect(hasRole(currentUser, "ROLE_ADMIN")).toBe(false);
 
     render(
       <QueryClientProvider client={queryClient}>
@@ -36,21 +40,23 @@ describe("UserTable tests", () => {
       "Professor Name",
       "Professor Email",
       "Requester Name",
-      "Recommendation Types",
+      "Recommendation Type",
       "Details",
       "Status",
       "Submission Date",
+      "Last Modified Date",
       "Completion Date",
     ];
     const expectedFields = [
       "id",
-      "professorName",
-      "professorEmail",
-      "requesterName",
-      "recommendationTypes",
+      "professor.fullName",
+      "professor.email",
+      "requester.fullName",
+      "recommendationType",
       "details",
       "status",
       "submissionDate",
+      "lastModifiedDate",
       "completionDate",
     ];
     const testId = "RecommendationRequestTable";
@@ -75,16 +81,21 @@ describe("UserTable tests", () => {
     const editButton = screen.queryByTestId(
       `${testId}-cell-row-0-col-Edit-button`,
     );
-    expect(editButton).not.toBeInTheDocument();
+    expect(editButton).toBeInTheDocument();
+
+    expect(editButton).toHaveClass("btn btn-primary");
 
     const deleteButton = screen.queryByTestId(
       `${testId}-cell-row-0-col-Delete-button`,
     );
-    expect(deleteButton).not.toBeInTheDocument();
+    expect(deleteButton).toBeInTheDocument();
   });
 
-  test("Has the expected colum headers and content for adminUser", () => {
+  test("Has the expected column headers and content for adminUser", () => {
     const currentUser = currentUserFixtures.adminUser;
+
+    expect(hasRole(currentUser, "ROLE_ADMIN")).toBe(true);
+    expect(hasRole(currentUser, "ROLE_USER")).toBe(true);
 
     render(
       <QueryClientProvider client={queryClient}>
@@ -102,21 +113,23 @@ describe("UserTable tests", () => {
       "Professor Name",
       "Professor Email",
       "Requester Name",
-      "Recommendation Types",
+      "Recommendation Type",
       "Details",
       "Status",
       "Submission Date",
+      "Last Modified Date",
       "Completion Date",
     ];
     const expectedFields = [
       "id",
-      "professorName",
-      "professorEmail",
-      "requesterName",
-      "recommendationTypes",
+      "professor.fullName",
+      "professor.email",
+      "requester.fullName",
+      "recommendationType",
       "details",
       "status",
       "submissionDate",
+      "lastModifiedDate",
       "completionDate",
     ];
     const testId = "RecommendationRequestTable";
@@ -138,21 +151,23 @@ describe("UserTable tests", () => {
       "3",
     );
 
-    const editButton = screen.getByTestId(
-      `${testId}-cell-row-0-col-Edit-button`,
-    );
-    expect(editButton).toBeInTheDocument();
-    expect(editButton).toHaveClass("btn-primary");
-
     const deleteButton = screen.getByTestId(
       `${testId}-cell-row-0-col-Delete-button`,
     );
     expect(deleteButton).toBeInTheDocument();
     expect(deleteButton).toHaveClass("btn-danger");
+
+    const editButton = screen.queryByTestId(
+      `${testId}-cell-row-0-col-Edit-button`,
+    );
+    expect(editButton).not.toBeInTheDocument();
   });
 
-  test("Edit button navigates to the edit page for admin user", async () => {
-    const currentUser = currentUserFixtures.adminUser;
+  test("Edit button navigates to the edit page for user", async () => {
+    const currentUser = currentUserFixtures.userOnly;
+
+    expect(hasRole(currentUser, "ROLE_USER")).toBe(true);
+    expect(hasRole(currentUser, "ROLE_ADMIN")).toBe(false);
 
     render(
       <QueryClientProvider client={queryClient}>
@@ -183,7 +198,82 @@ describe("UserTable tests", () => {
     );
   });
 
-  test("Delete button calls delete callback", async () => {
+  //Added for mutation coverage for the case in which the user is neither a user nor an admin
+  test("A user with no roles has expected content", () => {
+    const currentUser = currentUserFixtures.notLoggedIn;
+
+    expect(hasRole(currentUser, "ROLE_USER")).toBe(undefined);
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <RecommendationRequestTable
+            requests={recommendationRequestFixtures.threeRecommendations}
+            currentUser={currentUser}
+          />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    const testId = "RecommendationRequestTable";
+
+    const editButton = screen.queryByTestId(
+      `${testId}-cell-row-0-col-Edit-button`,
+    );
+    expect(editButton).not.toBeInTheDocument();
+
+    const deleteButton = screen.queryByTestId(
+      `${testId}-cell-row-0-col-Delete-button`,
+    );
+    expect(deleteButton).not.toBeInTheDocument();
+  });
+
+  //for user
+  test("Delete button calls delete callback (for user)", async () => {
+    // arrange
+    const currentUser = currentUserFixtures.userOnly;
+
+    const axiosMock = new AxiosMockAdapter(axios);
+    axiosMock
+      .onDelete("/api/recommendationrequest")
+      .reply(200, { message: "Recommendation Request deleted" });
+
+    // act - render the component
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <RecommendationRequestTable
+            requests={recommendationRequestFixtures.threeRecommendations}
+            currentUser={currentUser}
+          />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    // assert - check that the expected content is rendered
+
+    await waitFor(() => {
+      expect(
+        screen.getByTestId(`RecommendationRequestTable-cell-row-0-col-id`),
+      ).toHaveTextContent("2");
+    });
+
+    const deleteButton = screen.getByTestId(
+      `RecommendationRequestTable-cell-row-0-col-Delete-button`,
+    );
+    expect(deleteButton).toBeInTheDocument();
+
+    // act - click the delete button
+    fireEvent.click(deleteButton);
+
+    // assert - check that the delete endpoint was called
+
+    await waitFor(() => expect(axiosMock.history.delete.length).toBe(1));
+    expect(axiosMock.history.delete[0].params).toEqual({ id: 2 });
+  });
+
+  //for admin
+  test("Delete button calls delete callback (admin)", async () => {
     // arrange
     const currentUser = currentUserFixtures.adminUser;
 

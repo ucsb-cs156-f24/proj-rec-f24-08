@@ -10,7 +10,7 @@ export default function RecommendationRequestIndexPage() {
   const currentUser = useCurrentUser();
 
   const createButton = () => {
-    if (hasRole(currentUser, "ROLE_ADMIN")) {
+    if (hasRole(currentUser, "ROLE_USER")) {
       return (
         <Button
           variant="primary"

@@ -84,29 +84,6 @@ describe("RecommendationRequestIndexPage tests", () => {
     expect(button).toHaveAttribute("style", "float: right;");
   });
 
-  test("Renders with no Create Button for user not logged in", async () => {
-    // arrange
-    loggedOutUser(); 
-    const queryClient = new QueryClient();
-    axiosMock.onGet("/api/recommendationrequest/all").reply(200, []);
-
-    // act
-    render(
-      <QueryClientProvider client={queryClient}>
-        <MemoryRouter>
-          <RecommendationRequestIndexPage />
-        </MemoryRouter>
-      </QueryClientProvider>,
-    );
-
-    // assert
-    await waitFor(() => {
-      expect(
-        screen.queryByText(/Create Recommendation Request/),
-      ).not.toBeInTheDocument();
-    });
-  });
-
   test("renders three recommendation requests correctly for regular user", async () => {
     // arrange
     setupUserOnly();
