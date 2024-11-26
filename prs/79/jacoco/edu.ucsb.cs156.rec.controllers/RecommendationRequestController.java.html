@@ -23,12 +23,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.jknack.handlebars.internal.lang3.ObjectUtils.Null;
-
 @Tag(name = &quot;RecommendationRequest&quot;)
 @RequestMapping(&quot;/api/recommendationrequest&quot;)
 @RestController
-<span class="fc" id="L31">public class RecommendationRequestController extends ApiController {</span>
+<span class="fc" id="L29">public class RecommendationRequestController extends ApiController {</span>
     @Autowired
     RecommendationRequestRepository recommendationRequestRepository;
 
@@ -48,9 +46,9 @@ import com.github.jknack.handlebars.internal.lang3.ObjectUtils.Null;
     public Iterable&lt;RecommendationRequest&gt; allRequesterRecommendationRequests(
     ) {
         // toyed with having this only be ROLE_STUDENT but I think even professors should be able to submit requests so they can see which ones they have submitted too
-<span class="fc" id="L51">        User currentUser = getCurrentUser().getUser();</span>
-<span class="fc" id="L52">        Iterable&lt;RecommendationRequest&gt; recommendationRequests = recommendationRequestRepository.findAllByRequesterId(currentUser.getId());</span>
-<span class="fc" id="L53">        return recommendationRequests;</span>
+<span class="fc" id="L49">        User currentUser = getCurrentUser().getUser();</span>
+<span class="fc" id="L50">        Iterable&lt;RecommendationRequest&gt; recommendationRequests = recommendationRequestRepository.findAllByRequesterId(currentUser.getId());</span>
+<span class="fc" id="L51">        return recommendationRequests;</span>
     }
 
     /**
@@ -62,9 +60,9 @@ import com.github.jknack.handlebars.internal.lang3.ObjectUtils.Null;
     @GetMapping(&quot;/professor/all&quot;)
     public Iterable&lt;RecommendationRequest&gt; allProfessorRecommendationRequests(
     ) {
-<span class="fc" id="L65">        User currentUser = getCurrentUser().getUser();</span>
-<span class="fc" id="L66">        Iterable&lt;RecommendationRequest&gt; recommendationRequests = recommendationRequestRepository.findAllByProfessorId(currentUser.getId());</span>
-<span class="fc" id="L67">        return recommendationRequests;</span>
+<span class="fc" id="L63">        User currentUser = getCurrentUser().getUser();</span>
+<span class="fc" id="L64">        Iterable&lt;RecommendationRequest&gt; recommendationRequests = recommendationRequestRepository.findAllByProfessorId(currentUser.getId());</span>
+<span class="fc" id="L65">        return recommendationRequests;</span>
     }
 
     /**
@@ -77,13 +75,13 @@ import com.github.jknack.handlebars.internal.lang3.ObjectUtils.Null;
     @GetMapping(&quot;&quot;)
     public RecommendationRequest getById(
             @Parameter(name = &quot;id&quot;) @RequestParam Long id) {
-<span class="fc" id="L80">            Long currentUserId = getCurrentUser().getUser().getId();</span>
-<span class="fc" id="L81">            RecommendationRequest recommendationRequest = recommendationRequestRepository.findById(id)</span>
-<span class="fc" id="L82">                .orElseThrow(() -&gt; new EntityNotFoundException(RecommendationRequest.class, id));</span>
-<span class="fc bfc" id="L83" title="All 4 branches covered.">            if (recommendationRequest.getRequester().getId() != currentUserId &amp;&amp; recommendationRequest.getProfessor().getId() != currentUserId) {</span>
-<span class="fc" id="L84">                throw new EntityNotFoundException(RecommendationRequest.class, id);</span>
+<span class="fc" id="L78">            Long currentUserId = getCurrentUser().getUser().getId();</span>
+<span class="fc" id="L79">            RecommendationRequest recommendationRequest = recommendationRequestRepository.findById(id)</span>
+<span class="fc" id="L80">                .orElseThrow(() -&gt; new EntityNotFoundException(RecommendationRequest.class, id));</span>
+<span class="fc bfc" id="L81" title="All 4 branches covered.">            if (recommendationRequest.getRequester().getId() != currentUserId &amp;&amp; recommendationRequest.getProfessor().getId() != currentUserId) {</span>
+<span class="fc" id="L82">                throw new EntityNotFoundException(RecommendationRequest.class, id);</span>
             }
-<span class="fc" id="L86">        return recommendationRequest;</span>
+<span class="fc" id="L84">        return recommendationRequest;</span>
     }
 
     /**
@@ -104,23 +102,23 @@ import com.github.jknack.handlebars.internal.lang3.ObjectUtils.Null;
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dueDate)
             {
         //get current date right now and set status to pending
-<span class="fc" id="L107">        CurrentUser currentUser = getCurrentUser();</span>
-<span class="fc" id="L108">        RecommendationRequest recommendationRequest = new RecommendationRequest();</span>
-<span class="fc bfc" id="L109" title="All 2 branches covered.">        if (!recommendationType.equals(&quot;Other&quot;)) {</span>
-<span class="fc" id="L110">            requestTypeRepository.findByRequestType(recommendationType).orElseThrow(() -&gt; new EntityNotFoundException(RequestType.class, recommendationType));</span>
-<span class="fc" id="L111">            recommendationRequest.setRecommendationType(recommendationType);</span>
-<span class="fc" id="L112">            recommendationRequest.setDetails(details);</span>
+<span class="fc" id="L105">        CurrentUser currentUser = getCurrentUser();</span>
+<span class="fc" id="L106">        RecommendationRequest recommendationRequest = new RecommendationRequest();</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        if (!recommendationType.equals(&quot;Other&quot;)) {</span>
+<span class="fc" id="L108">            requestTypeRepository.findByRequestType(recommendationType).orElseThrow(() -&gt; new EntityNotFoundException(RequestType.class, recommendationType));</span>
+<span class="fc" id="L109">            recommendationRequest.setRecommendationType(recommendationType);</span>
+<span class="fc" id="L110">            recommendationRequest.setDetails(details);</span>
         } else {
-<span class="fc" id="L114">            recommendationRequest.setRecommendationType(details);</span>
+<span class="fc" id="L112">            recommendationRequest.setRecommendationType(details);</span>
         }
-<span class="fc" id="L116">        User professor = userRepository.findById(professorId).orElseThrow(() -&gt; new EntityNotFoundException(User.class, professorId));</span>
-<span class="fc" id="L117">        recommendationRequest.setProfessor(professor);</span>
-<span class="fc" id="L118">        recommendationRequest.setRequester(currentUser.getUser());</span>
-<span class="fc" id="L119">        recommendationRequest.setStatus(&quot;PENDING&quot;);</span>
-<span class="fc" id="L120">        recommendationRequest.setDueDate(dueDate);</span>
+<span class="fc" id="L114">        User professor = userRepository.findById(professorId).orElseThrow(() -&gt; new EntityNotFoundException(User.class, professorId));</span>
+<span class="fc" id="L115">        recommendationRequest.setProfessor(professor);</span>
+<span class="fc" id="L116">        recommendationRequest.setRequester(currentUser.getUser());</span>
+<span class="fc" id="L117">        recommendationRequest.setStatus(&quot;PENDING&quot;);</span>
+<span class="fc" id="L118">        recommendationRequest.setDueDate(dueDate);</span>
 
-<span class="fc" id="L122">        RecommendationRequest savedRecommendationRequest = recommendationRequestRepository.save(recommendationRequest);</span>
-<span class="fc" id="L123">        return savedRecommendationRequest;</span>
+<span class="fc" id="L120">        RecommendationRequest savedRecommendationRequest = recommendationRequestRepository.save(recommendationRequest);</span>
+<span class="fc" id="L121">        return savedRecommendationRequest;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
