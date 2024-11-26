@@ -53,9 +53,7 @@ describe("RecommendationRequestIndexPage tests", () => {
     axiosMock
       .onGet("/api/currentUser")
       .reply(200, apiCurrentUserFixtures.missingRolesToTestErrorHandling);
-    axiosMock
-      .onGet("/api/systemInfo")
-      .reply(401);
+    axiosMock.onGet("/api/systemInfo").reply(401);
   };
 
   test("Renders with Create Button for admin user", async () => {
@@ -82,6 +80,29 @@ describe("RecommendationRequestIndexPage tests", () => {
     const button = screen.getByText(/Create Recommendation Request/);
     expect(button).toHaveAttribute("href", "/requests/create");
     expect(button).toHaveAttribute("style", "float: right;");
+  });
+
+  test("Renders with no Create Button for user not logged in", async () => {
+    // arrange
+    loggedOutUser();
+    const queryClient = new QueryClient();
+    axiosMock.onGet("/api/recommendationrequest/all").reply(200, []);
+
+    // act
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <RecommendationRequestIndexPage />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    // assert
+    await waitFor(() => {
+      expect(
+        screen.queryByText(/Create Recommendation Request/),
+      ).not.toBeInTheDocument();
+    });
   });
 
   test("renders three recommendation requests correctly for regular user", async () => {
