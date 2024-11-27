@@ -51,5 +51,20 @@ import java.util.Map;
 <span class="fc" id="L51">      &quot;message&quot;, e.getMessage()</span>
     );
   }
+
+  /**
+  * This method handles the IllegalArgumentException.
+  * @param e the exception
+  * @return a map with the type and message of the exception
+  */
+  @ExceptionHandler({ IllegalArgumentException.class })
+  @ResponseStatus(HttpStatus.BAD_REQUEST) // Change status if more appropriate
+  public Object handleIllegalArgumentException(Throwable e) {
+<span class="fc" id="L63">    return Map.of(</span>
+<span class="fc" id="L64">      &quot;type&quot;, e.getClass().getSimpleName(),</span>
+<span class="fc" id="L65">      &quot;message&quot;, e.getMessage()</span>
+    );
+  }
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
