@@ -115,7 +115,7 @@ import org.springframework.web.bind.annotation.RestController;
      * This method returns a list of recommendation requests with specified status for a professor.
      * @return a list of recommendation requests with specified status for a professor.
      */
-    @Operation(summary = &quot;Get all completed recommendation requests for a professor&quot;)
+    @Operation(summary = &quot;Get all recommendation requests with specified status for a professor&quot;)
     @GetMapping(&quot;/professor/filtered&quot;)
     @PreAuthorize(&quot;hasRole('ROLE_PROFESSOR')&quot;)
     public Iterable&lt;RecommendationRequest&gt; getRecommendationRequestByStatusForProfessor(
