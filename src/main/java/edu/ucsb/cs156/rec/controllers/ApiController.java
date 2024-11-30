@@ -51,4 +51,19 @@ public abstract class ApiController {
       "message", e.getMessage()
     );
   }
+
+  /**
+  * This method handles the IllegalArgumentException.
+  * @param e the exception
+  * @return a map with the type and message of the exception
+  */
+  @ExceptionHandler({ IllegalArgumentException.class })
+  @ResponseStatus(HttpStatus.BAD_REQUEST) // Change status if more appropriate
+  public Object handleIllegalArgumentException(Throwable e) {
+    return Map.of(
+      "type", e.getClass().getSimpleName(),
+      "message", e.getMessage()
+    );
+  }
+
 }

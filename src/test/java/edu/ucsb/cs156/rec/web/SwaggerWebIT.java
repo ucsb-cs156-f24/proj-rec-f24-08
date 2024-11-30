@@ -73,17 +73,21 @@ public class SwaggerWebIT {
      * a comprehensive test of the Swagger page.
      */
     @Test
-    public void swagger_page_has_endpoints_for_UCSBDiningCommons() throws Exception {
+    public void swagger_page_has_endpoints_for_User() throws Exception {
 
 
         assertThat(
-                page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("UCSBDiningCommons").setExact(true)))
+                page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Current User Information").setExact(true)))
                 .isVisible();
 
-        assertThat(page.getByText("Get a single commons"))
+        assertThat(page.getByText("Get information about current user"))
                 .isVisible();
 
-        assertThat(page.getByText("Update a single commons"))
+        assertThat(
+                page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("System Information").setExact(true)))
+                .isVisible();
+
+        assertThat(page.getByText("Get global information about the application"))
                 .isVisible();
     }
 

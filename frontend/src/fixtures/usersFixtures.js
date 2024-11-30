@@ -13,6 +13,8 @@ const usersFixtures = {
       locale: "en",
       hostedDomain: "ucsb.edu",
       admin: true,
+      professor: false,
+      student: false,
     },
     {
       id: 2,
@@ -27,6 +29,8 @@ const usersFixtures = {
       locale: "en",
       hostedDomain: null,
       admin: false,
+      professor: false,
+      student: true,
     },
     {
       id: 3,
@@ -41,6 +45,8 @@ const usersFixtures = {
       locale: "en",
       hostedDomain: null,
       admin: false,
+      professor: true,
+      student: false,
     },
   ],
 };

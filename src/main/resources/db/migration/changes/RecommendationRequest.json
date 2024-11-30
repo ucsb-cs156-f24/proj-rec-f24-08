@@ -35,25 +35,31 @@
                   },
                   {
                     "column": {
-                      "name": "PROFESSOR_NAME",
-                      "type": "VARCHAR(255)"
+                      "name": "REQUESTER_ID",
+                      "type": "BIGINT",
+                      "constraints": {
+                        "foreignKeyName": "RECOMMENDATIONREQUEST_REQUESTER_ID_FK",
+                        "references": "USERS(ID)",
+                        "onDelete": "RESTRICT",
+                        "onUpdate": "RESTRICT"
+                      }
                     }
                   },
                   {
                     "column": {
-                      "name": "PROFESSOR_EMAIL",
-                      "type": "VARCHAR(255)"
+                      "name": "PROFESSOR_ID",
+                      "type": "BIGINT",
+                      "constraints": {
+                        "foreignKeyName": "RECOMMENDATIONREQUEST_PROFESSOR_ID_FK",
+                        "references": "USERS(ID)",
+                        "onDelete": "RESTRICT",
+                        "onUpdate": "RESTRICT"
+                      }
                     }
                   },
                   {
                     "column": {
-                      "name": "REQUESTER_NAME",
-                      "type": "VARCHAR(255)"
-                    }
-                  },
-                  {
-                    "column": {
-                      "name": "RECOMMENDATION_TYPES",
+                      "name": "RECOMMENDATION_TYPE",
                       "type": "VARCHAR(255)"
                     }
                   },
@@ -78,6 +84,18 @@
                   {
                     "column": {
                       "name": "COMPLETION_DATE",
+                      "type": "TIMESTAMP"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "DUE_DATE",
+                      "type": "TIMESTAMP"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "LAST_MODIFIED_DATE",
                       "type": "TIMESTAMP"
                     }
                   }
