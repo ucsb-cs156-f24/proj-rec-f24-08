@@ -212,5 +212,20 @@ import lombok.extern.slf4j.Slf4j;
 <span class="fc" id="L212">        RecommendationRequest savedRecommendationRequest = recommendationRequestRepository.save(recommendationRequest);</span>
 <span class="fc" id="L213">        return savedRecommendationRequest;</span>
     }
+
+    /**
+     * This method returns a list of recommendation requests with specified status for a professor.
+     * @return a list of recommendation requests with specified status for a professor.
+     */
+    @Operation(summary = &quot;Get all recommendation requests with specified status for a professor&quot;)
+    @GetMapping(&quot;/professor/filtered&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_PROFESSOR')&quot;)
+    public Iterable&lt;RecommendationRequest&gt; getRecommendationRequestByStatusForProfessor(
+        @RequestParam String status) {
+<span class="fc" id="L225">        User currentUser = getCurrentUser().getUser();</span>
+
+<span class="fc" id="L227">        return recommendationRequestRepository.findAllByProfessorIdAndStatus(</span>
+<span class="fc" id="L228">            currentUser.getId(), status);</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
