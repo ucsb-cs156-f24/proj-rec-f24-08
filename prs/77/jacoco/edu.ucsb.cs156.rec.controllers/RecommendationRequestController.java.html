@@ -15,21 +15,122 @@ import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 @Tag(name = &quot;RecommendationRequest&quot;)
 @RequestMapping(&quot;/api/recommendationrequest&quot;)
 @RestController
-<span class="fc" id="L27">public class RecommendationRequestController extends ApiController {</span>
+<span class="fc" id="L32">@Slf4j</span>
+<span class="fc" id="L33">public class RecommendationRequestController extends ApiController {</span>
+  
     @Autowired
     RecommendationRequestRepository recommendationRequestRepository;
 
     @Autowired
     UserRepository userRepository;
+
+    /**
+     * Any admin can delete a RecommendationRequest
+     * 
+     * @param id the id of the RecommendationRequest to delete
+     * @return a message indicating that the RecommendationRequest was deleted
+     */
+    @Operation(summary = &quot;An admin can delete a RecommendationRequest&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
+    @DeleteMapping(&quot;/admin&quot;)
+    public Object deleteRecommendationRequestAsAdmin(@Parameter(name = &quot;id&quot;) @RequestParam Long id) {
+<span class="fc" id="L51">        RecommendationRequest recommendationRequest = </span>
+        recommendationRequestRepository
+<span class="fc" id="L53">            .findById(id)</span>
+<span class="fc" id="L54">            .orElseThrow(() -&gt; new EntityNotFoundException(RecommendationRequest.class, id));</span>
+
+<span class="fc" id="L56">        recommendationRequestRepository.delete(recommendationRequest);</span>
+
+<span class="fc" id="L58">        return genericMessage(&quot;RecommendationRequest with id %s deleted&quot;.formatted(id));</span>
+    }
+
+    /**
+     * The user who posted a RecommendationRequest can delete their RecommendationRequest
+     * 
+     * @param id the id of the RecommendationRequest to delete
+     * @return a message indicating that the RecommendationRequest was deleted
+     */
+    @Operation(summary = &quot;User can delete their RecommendationRequest&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
+    @DeleteMapping(&quot;&quot;)
+    public Object deleteRecommendationRequestAsUser(@Parameter(name = &quot;id&quot;) @RequestParam Long id) {
+<span class="fc" id="L71">        User currentUser = getCurrentUser().getUser(); </span>
+<span class="fc" id="L72">        RecommendationRequest recommendationRequest = </span>
+        recommendationRequestRepository
+<span class="fc" id="L74">            .findByIdAndRequester(id, currentUser)</span>
+<span class="fc" id="L75">            .orElseThrow(() -&gt; new EntityNotFoundException(RecommendationRequest.class, id));</span>
+
+<span class="fc" id="L77">        recommendationRequestRepository.delete(recommendationRequest);</span>
+
+<span class="fc" id="L79">        return genericMessage(&quot;RecommendationRequest with id %s deleted&quot;.formatted(id));</span>
+    }
+
+    /**
+     * The user who posted a RecommendationRequest can update their RecommendationRequest
+     * 
+     * @param id       the id of the Recommendation Request to update
+     * @param incoming the updated Recommendation Request
+     * @return the updated Recommendation Request object
+     */
+    @Operation(summary = &quot;User can update their RecommendationRequest&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
+    @PutMapping(&quot;&quot;)
+    public RecommendationRequest updateRecommendationRequestAsUser( 
+        @Parameter(name = &quot;id&quot;) @RequestParam Long id,
+        @RequestBody @Valid RecommendationRequest incoming) {
+
+<span class="fc" id="L96">        User currentUser = getCurrentUser().getUser(); </span>
+<span class="fc" id="L97">        RecommendationRequest recommendationRequest = </span>
+            recommendationRequestRepository
+<span class="fc" id="L99">                .findByIdAndRequester(id, currentUser)</span>
+<span class="fc" id="L100">                .orElseThrow(() -&gt; new EntityNotFoundException(RecommendationRequest.class, id));</span>
+
+<span class="fc" id="L102">        recommendationRequest.setDetails(incoming.getDetails());</span>
+
+<span class="fc" id="L104">        recommendationRequestRepository.save(recommendationRequest);</span>
+           
+<span class="fc" id="L106">        return recommendationRequest;    </span>
+    }
+
+     /**
+     * Prof can update a Recommendation Request's status
+     * 
+     * @param id       the id of the Recommendation Request to update
+     * @param incoming the updated Recommendation Request
+     * @return the updated Recommendation Request object
+     */
+    @Operation(summary = &quot;A Professor can update a recommendation request's status&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_PROFESSOR')&quot;)
+    @PutMapping(&quot;/professor&quot;)
+    public RecommendationRequest updateRecommendationRequestAsAdmin(
+        @Parameter(name = &quot;id&quot;) @RequestParam Long id,
+        @RequestBody @Valid RecommendationRequest incoming) {
+
+<span class="fc" id="L123">        RecommendationRequest recommendationRequest = </span>
+            recommendationRequestRepository
+<span class="fc" id="L125">                .findById(id)</span>
+<span class="fc" id="L126">                .orElseThrow(() -&gt; new EntityNotFoundException(RecommendationRequest.class, id));</span>
+
+<span class="fc" id="L128">        recommendationRequest.setStatus(incoming.getStatus());</span>
+
+<span class="fc" id="L130">        recommendationRequestRepository.save(recommendationRequest);</span>
+
+<span class="fc" id="L132">        return recommendationRequest;</span>
+    }
 
     /**
      * This method returns a list of all Recommendation Requests requested by current student.
@@ -41,9 +142,9 @@ import org.springframework.web.bind.annotation.RestController;
     public Iterable&lt;RecommendationRequest&gt; allRequesterRecommendationRequests(
     ) {
         // toyed with having this only be ROLE_STUDENT but I think even professors should be able to submit requests so they can see which ones they have submitted too
-<span class="fc" id="L44">        User currentUser = getCurrentUser().getUser();</span>
-<span class="fc" id="L45">        Iterable&lt;RecommendationRequest&gt; recommendationRequests = recommendationRequestRepository.findAllByRequesterId(currentUser.getId());</span>
-<span class="fc" id="L46">        return recommendationRequests;</span>
+<span class="fc" id="L145">        User currentUser = getCurrentUser().getUser();</span>
+<span class="fc" id="L146">        Iterable&lt;RecommendationRequest&gt; recommendationRequests = recommendationRequestRepository.findAllByRequesterId(currentUser.getId());</span>
+<span class="fc" id="L147">        return recommendationRequests;</span>
     }
 
     /**
@@ -55,9 +156,9 @@ import org.springframework.web.bind.annotation.RestController;
     @GetMapping(&quot;/professor/all&quot;)
     public Iterable&lt;RecommendationRequest&gt; allProfessorRecommendationRequests(
     ) {
-<span class="fc" id="L58">        User currentUser = getCurrentUser().getUser();</span>
-<span class="fc" id="L59">        Iterable&lt;RecommendationRequest&gt; recommendationRequests = recommendationRequestRepository.findAllByProfessorId(currentUser.getId());</span>
-<span class="fc" id="L60">        return recommendationRequests;</span>
+<span class="fc" id="L159">        User currentUser = getCurrentUser().getUser();</span>
+<span class="fc" id="L160">        Iterable&lt;RecommendationRequest&gt; recommendationRequests = recommendationRequestRepository.findAllByProfessorId(currentUser.getId());</span>
+<span class="fc" id="L161">        return recommendationRequests;</span>
     }
 
     /**
@@ -70,13 +171,13 @@ import org.springframework.web.bind.annotation.RestController;
     @GetMapping(&quot;&quot;)
     public RecommendationRequest getById(
             @Parameter(name = &quot;id&quot;) @RequestParam Long id) {
-<span class="fc" id="L73">            Long currentUserId = getCurrentUser().getUser().getId();</span>
-<span class="fc" id="L74">            RecommendationRequest recommendationRequest = recommendationRequestRepository.findById(id)</span>
-<span class="fc" id="L75">                .orElseThrow(() -&gt; new EntityNotFoundException(RecommendationRequest.class, id));</span>
-<span class="fc bfc" id="L76" title="All 4 branches covered.">            if (recommendationRequest.getRequester().getId() != currentUserId &amp;&amp; recommendationRequest.getProfessor().getId() != currentUserId) {</span>
-<span class="fc" id="L77">                throw new EntityNotFoundException(RecommendationRequest.class, id);</span>
+<span class="fc" id="L174">            Long currentUserId = getCurrentUser().getUser().getId();</span>
+<span class="fc" id="L175">            RecommendationRequest recommendationRequest = recommendationRequestRepository.findById(id)</span>
+<span class="fc" id="L176">                .orElseThrow(() -&gt; new EntityNotFoundException(RecommendationRequest.class, id));</span>
+<span class="fc bfc" id="L177" title="All 4 branches covered.">            if (recommendationRequest.getRequester().getId() != currentUserId &amp;&amp; recommendationRequest.getProfessor().getId() != currentUserId) {</span>
+<span class="fc" id="L178">                throw new EntityNotFoundException(RecommendationRequest.class, id);</span>
             }
-<span class="fc" id="L79">        return recommendationRequest;</span>
+<span class="fc" id="L180">        return recommendationRequest;</span>
     }
 
     /**
@@ -87,6 +188,7 @@ import org.springframework.web.bind.annotation.RestController;
      * @param dueDate submission date of request
      * @return the save recommendationrequests (with it's id field set by the database)
      */
+
     @Operation(summary = &quot;Create a new recommendation request&quot;)
     @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
     @PostMapping(&quot;/post&quot;)
@@ -97,18 +199,18 @@ import org.springframework.web.bind.annotation.RestController;
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dueDate)
             {
         //get current date right now and set status to pending
-<span class="fc" id="L100">        CurrentUser currentUser = getCurrentUser();</span>
-<span class="fc" id="L101">        RecommendationRequest recommendationRequest = new RecommendationRequest();</span>
-<span class="fc" id="L102">        User professor = userRepository.findById(professorId).orElseThrow(() -&gt; new EntityNotFoundException(User.class, professorId));</span>
-<span class="fc" id="L103">        recommendationRequest.setProfessor(professor);</span>
-<span class="fc" id="L104">        recommendationRequest.setRequester(currentUser.getUser());</span>
-<span class="fc" id="L105">        recommendationRequest.setRecommendationType(recommendationType);</span>
-<span class="fc" id="L106">        recommendationRequest.setDetails(details);</span>
-<span class="fc" id="L107">        recommendationRequest.setStatus(&quot;PENDING&quot;);</span>
-<span class="fc" id="L108">        recommendationRequest.setDueDate(dueDate);</span>
+<span class="fc" id="L202">        CurrentUser currentUser = getCurrentUser();</span>
+<span class="fc" id="L203">        RecommendationRequest recommendationRequest = new RecommendationRequest();</span>
+<span class="fc" id="L204">        User professor = userRepository.findById(professorId).orElseThrow(() -&gt; new EntityNotFoundException(User.class, professorId));</span>
+<span class="fc" id="L205">        recommendationRequest.setProfessor(professor);</span>
+<span class="fc" id="L206">        recommendationRequest.setRequester(currentUser.getUser());</span>
+<span class="fc" id="L207">        recommendationRequest.setRecommendationType(recommendationType);</span>
+<span class="fc" id="L208">        recommendationRequest.setDetails(details);</span>
+<span class="fc" id="L209">        recommendationRequest.setStatus(&quot;PENDING&quot;);</span>
+<span class="fc" id="L210">        recommendationRequest.setDueDate(dueDate);</span>
 
-<span class="fc" id="L110">        RecommendationRequest savedRecommendationRequest = recommendationRequestRepository.save(recommendationRequest);</span>
-<span class="fc" id="L111">        return savedRecommendationRequest;</span>
+<span class="fc" id="L212">        RecommendationRequest savedRecommendationRequest = recommendationRequestRepository.save(recommendationRequest);</span>
+<span class="fc" id="L213">        return savedRecommendationRequest;</span>
     }
 
     /**
@@ -120,10 +222,10 @@ import org.springframework.web.bind.annotation.RestController;
     @PreAuthorize(&quot;hasRole('ROLE_PROFESSOR')&quot;)
     public Iterable&lt;RecommendationRequest&gt; getRecommendationRequestByStatusForProfessor(
         @RequestParam String status) {
-<span class="fc" id="L123">        User currentUser = getCurrentUser().getUser();</span>
+<span class="fc" id="L225">        User currentUser = getCurrentUser().getUser();</span>
 
-<span class="fc" id="L125">        return recommendationRequestRepository.findAllByProfessorIdAndStatus(</span>
-<span class="fc" id="L126">            currentUser.getId(), status);</span>
+<span class="fc" id="L227">        return recommendationRequestRepository.findAllByProfessorIdAndStatus(</span>
+<span class="fc" id="L228">            currentUser.getId(), status);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
