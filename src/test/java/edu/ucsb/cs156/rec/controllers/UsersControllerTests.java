@@ -14,6 +14,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -26,6 +29,7 @@ import static org.mockito.ArgumentMatchers.any;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.Map;
 
@@ -249,6 +253,22 @@ public class UsersControllerTests extends ControllerTestCase {
     verify(userRepository, times(1)).findById(15L);
     Map<String, Object> json = responseToJson(response);
     assertEquals("User with id 15 not found", json.get("message"));
+  }
+
+  @WithMockUser(roles = { "USER" })
+  @Test
+  public void non_admin_can_get_all_professors() throws Exception{
+    User professor = User.builder().id(1L).professor(true).email("phtcon@ucsb.edu").fullName("Phill Conrad").familyName("Conrad").build();
+    Iterable<User> professors = Arrays.asList(professor);
+    when(userRepository.professorIsTrue()).thenReturn(professors);
+    MvcResult response = mockMvc.perform(get("/api/admin/users/professors").with(csrf()))
+             .andExpect(status().isOk()).andReturn();
+    verify(userRepository, times(1)).professorIsTrue();
+    String responseString = response.getResponse().getContentAsString();
+    assertTrue(responseString.contains("Phill Conrad"));
+    assertTrue(responseString.contains("1"));
+    assertFalse(responseString.contains("email"));
+
   }
 
 }

@@ -4,18 +4,23 @@ import edu.ucsb.cs156.rec.repositories.UserRepository;
 import edu.ucsb.cs156.rec.testconfig.TestConfig;
 import edu.ucsb.cs156.rec.ControllerTestCase;
 import edu.ucsb.cs156.rec.entities.RecommendationRequest;
+import edu.ucsb.cs156.rec.entities.RequestType;
 import edu.ucsb.cs156.rec.entities.User;
 import edu.ucsb.cs156.rec.repositories.RecommendationRequestRepository;
+import edu.ucsb.cs156.rec.repositories.RequestTypeRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -25,6 +30,8 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -33,11 +40,15 @@ import static org.mockito.Mockito.when;
 @WebMvcTest(controllers = RecommendationRequestController.class)
 @Import(TestConfig.class)
 public class RecommendationRequestTests extends ControllerTestCase {
+
         @MockBean
         RecommendationRequestRepository recommendationRequestRepository;
 
         @MockBean
         UserRepository userRepository;
+
+        @MockBean
+        RequestTypeRepository requestTypeRepository;
 
         // Authorization tests for /api/phones/admin/all
 
@@ -300,7 +311,7 @@ public class RecommendationRequestTests extends ControllerTestCase {
                 RecommendationRequest recommendationRequest1 = RecommendationRequest.builder()
                                 .professor(other)
                                 .requester(u)
-                                .recommendationType("PhDprogram")
+                                .recommendationType("Other")
                                 .details("otherdetails")
                                 .dueDate(LocalDateTime.parse("2024-11-25T16:46:28"))
                                 .status("PENDING")
@@ -311,7 +322,7 @@ public class RecommendationRequestTests extends ControllerTestCase {
                 // act
                 MvcResult response = mockMvc.perform(
                                 post("/api/recommendationrequest/post")
-                                .param("recommendationType", "PhDprogram")
+                                .param("recommendationType", "Other")
                                 .param("details", "otherdetails")
                                 .param("professorId", "7")
                                 .param("dueDate", "2024-11-25T16:46:28")
@@ -329,9 +340,11 @@ public class RecommendationRequestTests extends ControllerTestCase {
         @Test
         public void a_user_can_post_a_new_recommendation_request_without_existing_professor() throws Exception {
                 // act
+                RequestType r = RequestType.builder().requestType("PhD program").build();
+                when(requestTypeRepository.findByRequestType("PhD program")).thenReturn(Optional.of(r));
                 mockMvc.perform(
                                 post("/api/recommendationrequest/post")
-                                .param("recommendationType", "PhDprogram")
+                                .param("recommendationType", "PhD program")
                                 .param("details", "otherdetails")
                                 .param("professorId", "7")
                                 .param("dueDate", "2024-11-25T16:46:28")
@@ -339,5 +352,122 @@ public class RecommendationRequestTests extends ControllerTestCase {
                                 .andExpect(status().isNotFound())
                                 .andExpect(result -> assertEquals("User with id 7 not found",
                                                                 result.getResolvedException().getMessage()));
+        }
+
+        @WithMockUser(roles = { "USER" })
+        @Test
+        public void rec_type_in_table_and_not_other() throws Exception {
+                // arrange
+                User u = currentUserService.getCurrentUser().getUser();
+                User other = User.builder().id(7L).email("testemail@ucsb.edu").fullName("Test User").build();
+                RecommendationRequest recommendationRequest1 = RecommendationRequest.builder()
+                                .professor(other)
+                                .requester(u)
+                                .recommendationType("CS Department BS/MS program")
+                                .details("test")
+                                .dueDate(LocalDateTime.parse("2024-11-25T16:46:28"))
+                                .status("PENDING")
+                                .build();
+
+                when(recommendationRequestRepository.save(eq(recommendationRequest1))).thenReturn(recommendationRequest1);
+                when(userRepository.findById(7L)).thenReturn(Optional.of(other));
+                RequestType r = RequestType.builder().requestType("CS Department BS/MS program").build();
+                when(requestTypeRepository.findByRequestType("CS Department BS/MS program")).thenReturn(Optional.of(r));
+                // act
+                MvcResult response = mockMvc.perform(
+                                post("/api/recommendationrequest/post")
+                                .param("recommendationType", "CS Department BS/MS program")
+                                .param("details", "test")
+                                .param("professorId", "7")
+                                .param("dueDate", "2024-11-25T16:46:28")
+                                .with(csrf()))
+                                .andExpect(status().isOk())
+                                .andReturn();
+                // assert
+                verify(recommendationRequestRepository, times(1)).save(eq(recommendationRequest1));
+                String expectedJson = mapper.writeValueAsString(recommendationRequest1);
+                String responseString = response.getResponse().getContentAsString();
+                assertEquals(expectedJson, responseString);
+        }
+
+        @WithMockUser(roles = { "USER" })
+        @Test
+        public void rec_type_not_table_and_not_other() throws Exception {
+                // act
+                when(requestTypeRepository.findByRequestType("Not correct")).thenReturn(Optional.empty());
+                MvcResult response = mockMvc.perform(
+                                post("/api/recommendationrequest/post")
+                                .param("recommendationType", "CS Department BS/MS program")
+                                .param("details", "otherdetails")
+                                .param("professorId", "7")
+                                .param("dueDate", "2024-11-25T16:46:28")
+                                .with(csrf()))
+                                .andExpect(status().isNotFound()).andReturn();
+                // assert
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("EntityNotFoundException", json.get("type"));
+                assertEquals("RequestType with id CS Department BS/MS program not found", json.get("message"));
+
+        }
+        
+        @Test
+        @WithMockUser(roles = "PROFESSOR")
+        public void test_professor_can_get_recommendation_request_by_type() throws Exception {
+                // Arrange
+                User mockProfessor = User.builder().id(1L).email("professor@ucsb.edu").build();
+                RecommendationRequest mockRequest1 = RecommendationRequest.builder()
+                        .id(101L).professor(mockProfessor).status("completed").details("Details 1").build();
+                RecommendationRequest mockRequest2 = RecommendationRequest.builder()
+                        .id(102L).professor(mockProfessor).status("completed").details("Details 2").build();
+
+                List<RecommendationRequest> mockRequests = List.of(mockRequest1, mockRequest2);
+
+                when(userRepository.findByEmail("professor@ucsb.edu")).thenReturn(Optional.of(mockProfessor));
+                when(recommendationRequestRepository.findAllByProfessorIdAndStatus(1L, "completed")).thenReturn(mockRequests);
+
+                // Act & Assert
+                mockMvc.perform(get("/api/recommendationrequest/professor/filtered")
+                        .param("status", "completed"))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.length()").value(2))
+                        .andExpect(jsonPath("$[0].id").value(101))
+                        .andExpect(jsonPath("$[1].id").value(102));
+
+                verify(recommendationRequestRepository, times(1)).findAllByProfessorIdAndStatus(1L, "completed");
+        }
+
+        @Test
+        @WithMockUser(roles = { "PROFESSOR" })
+        public void test_professor_get_recommendation_request_by_status_empty_list() throws Exception {
+                // Arrange
+                User mockProfessor = User.builder()
+                        .id(1L)
+                        .email("professor@ucsb.edu")
+                        .build();
+
+                List<RecommendationRequest> mockRequests = List.of();
+
+                when(userRepository.findByEmail("professor@ucsb.edu")).thenReturn(java.util.Optional.of(mockProfessor));
+                when(recommendationRequestRepository.findAllByProfessorIdAndStatus(1L, "completed"))
+                        .thenReturn(mockRequests);
+
+                // Act & Assert
+                mockMvc.perform(get("/api/recommendationrequest/professor/filtered")
+                        .param("status", "completed"))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.length()").value(0));
+
+                verify(recommendationRequestRepository, times(1)).findAllByProfessorIdAndStatus(1L, "completed");
+        }
+
+        @Test
+        @WithMockUser(roles = { "STUDENT" })
+        public void test_non_professor_get_recommendation_request_by_status_access_denied() throws Exception {
+                // Act & Assert
+                mockMvc.perform(get("/api/recommendationrequest/professor/filtered")
+                        .param("status", "completed"))
+                        .andExpect(status().isForbidden());
+
+                verify(recommendationRequestRepository, times(0)).findAllByProfessorIdAndStatus(anyLong(), anyString());
         }
 }

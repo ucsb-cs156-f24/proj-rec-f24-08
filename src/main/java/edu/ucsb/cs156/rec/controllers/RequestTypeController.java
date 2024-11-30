@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,15 +37,16 @@ public class RequestTypeController extends ApiController {
     @Autowired
     RequestTypeRepository requestTypeRepository;
 
+
     /**
-     * List all Request Types
-     * 
-     * @return an iterable of RequestType
+     * This method returns a list of all Request Types.
+     * @return a list of all Request Types.
      */
-    @Operation(summary= "List all request types")
+    @Operation(summary = "List all request types")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/all")
-    public Iterable<RequestType> allRequestTypes() {
+    public Iterable<RequestType> allRequestTypes(
+    ) {
         Iterable<RequestType> requestTypes = requestTypeRepository.findAll();
         return requestTypes;
     }

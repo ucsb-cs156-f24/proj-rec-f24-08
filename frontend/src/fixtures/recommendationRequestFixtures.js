@@ -64,7 +64,6 @@ const recommendationRequestFixtures = {
         email: "shrenapunj@ucsb.edu",
       },
     },
-
     {
       id: 4,
       professor_id: 4,

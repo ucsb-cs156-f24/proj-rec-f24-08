@@ -40,24 +40,28 @@ describe("UserTable tests", () => {
       "Professor Name",
       "Professor Email",
       "Requester Name",
+      "Requester Email",
       "Recommendation Type",
       "Details",
       "Status",
       "Submission Date",
       "Last Modified Date",
       "Completion Date",
+      "Due Date",
     ];
     const expectedFields = [
       "id",
       "professor.fullName",
       "professor.email",
       "requester.fullName",
+      "requester.email",
       "recommendationType",
       "details",
       "status",
       "submissionDate",
       "lastModifiedDate",
       "completionDate",
+      "dueDate",
     ];
     const testId = "RecommendationRequestTable";
 
@@ -113,24 +117,28 @@ describe("UserTable tests", () => {
       "Professor Name",
       "Professor Email",
       "Requester Name",
+      "Requester Email",
       "Recommendation Type",
       "Details",
       "Status",
       "Submission Date",
       "Last Modified Date",
       "Completion Date",
+      "Due Date",
     ];
     const expectedFields = [
       "id",
       "professor.fullName",
       "professor.email",
       "requester.fullName",
+      "requester.email",
       "recommendationType",
       "details",
       "status",
       "submissionDate",
       "lastModifiedDate",
       "completionDate",
+      "dueDate",
     ];
     const testId = "RecommendationRequestTable";
 

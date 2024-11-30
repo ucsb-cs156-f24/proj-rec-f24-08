@@ -21,6 +21,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 /**
  * This is a JPA entity that represents a Recommendation Request
  */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

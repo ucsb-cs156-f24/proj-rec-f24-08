@@ -48,6 +48,10 @@ export default function RecommendationRequestTable({ requests, currentUser }) {
       accessor: "requester.fullName",
     },
     {
+      Header: "Requester Email",
+      accessor: "requester.email",
+    },
+    {
       Header: "Recommendation Type",
       accessor: "recommendationType",
     },
@@ -70,6 +74,10 @@ export default function RecommendationRequestTable({ requests, currentUser }) {
     {
       Header: "Completion Date",
       accessor: "completionDate",
+    },
+    {
+      Header: "Due Date",
+      accessor: "dueDate",
     },
   ];
 

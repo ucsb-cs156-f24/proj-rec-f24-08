@@ -566,5 +566,23 @@ public class RequestTypeControllerTests extends ControllerTestCase {
                 Map<String, Object> json = responseToJson(response);
                 assertEquals("RequestType with id 67 not found", json.get("message"));
         }
+        @Test
+    public void logged_out_users_cannot_get_all_request_types() throws Exception {
+            mockMvc.perform(get("/api/requesttypes/all"))
+                            .andExpect(status().is(403)); // logged out users can't get all
+    }
+
+    @Test
+    @WithMockUser(roles = { "USER" })
+    public void logged_in_user_can_get_all() throws Exception {
+            RequestType r = RequestType.builder().id(1L).requestType("Type A").build();
+            Iterable<RequestType> rs = Arrays.asList(r);
+            when(requestTypeRepository.findAll()).thenReturn(rs);
+            MvcResult response = mockMvc.perform(get("/api/requesttypes/all"))
+                            .andExpect(status().isOk()).andReturn();
+            String expectedJson = mapper.writeValueAsString(rs);
+            String responseString = response.getResponse().getContentAsString();
+            assertEquals(expectedJson, responseString);
+    }
 
 }
