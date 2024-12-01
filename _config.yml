@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-f24/proj-rec-f24-08
 owner: ucsb-cs156-f24
 repo_name: proj-rec-f24-08
-pull_requests: [{"author":{"id":"U_kgDOBcsiCw","is_bot":false,"login":"obenedek20","name":""},"headRefName":"Oscar-MergeFix","number":82,"title":"Oscar - Small error in merging for the RequestType /all endpoint inside form","url":"https://github.com/ucsb-cs156-f24/proj-rec-f24-08/pull/82"},{"author":{"id":"MDQ6VXNlcjUzMjc5MDkx","is_bot":false,"login":"qwistaycat","name":"Christy Yu"},"headRefName":"cy-Completed-Requests-Page","number":81,"title":"Christy - completed requests page","url":"https://github.com/ucsb-cs156-f24/proj-rec-f24-08/pull/81"}]
+pull_requests: [{"author":{"id":"MDQ6VXNlcjUzMjc5MDkx","is_bot":false,"login":"qwistaycat","name":"Christy Yu"},"headRefName":"cy-Completed-Requests-Page","number":81,"title":"Christy - completed requests page","url":"https://github.com/ucsb-cs156-f24/proj-rec-f24-08/pull/81"}]
