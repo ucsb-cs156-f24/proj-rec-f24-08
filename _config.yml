@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-f24/proj-rec-f24-08
 owner: ucsb-cs156-f24
 repo_name: proj-rec-f24-08
-pull_requests: [{"author":{"id":"MDQ6VXNlcjExMTkwMTc=","is_bot":false,"login":"pconrad","name":"Phill Conrad"},"headRefName":"pc-User-HotFix","number":83,"title":"pc - hotfix to bboolean fields in users table","url":"https://github.com/ucsb-cs156-f24/proj-rec-f24-08/pull/83"}]
+pull_requests: []
